@@ -13,7 +13,7 @@ const isDevelopment = !isProduction;
 module.exports = {
   // Server options
   host: '0.0.0.0',
-  port: 3000,
+  port: 3010,
 
   // Application environment
   env,
