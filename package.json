@@ -1,0 +1,78 @@
+{
+  "name": "recordio-server",
+  "version": "0.0.0",
+  "description": "Server for recordio app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon --watch src index.js",
+    "start": "node index.js",
+    "lint": "eslint . && prettier --check \"**/*.{json,md,html,yaml}\"",
+    "lint:fix": "eslint . --fix && prettier --write \"**/*.{json,md,html,yaml}\"",
+    "migrate": "sequelize db:migrate",
+    "delAllMigrate": "sequelize db:migrate:undo:all",
+    "seed:all": "sequelize db:seed:all",
+    "seed:undo": "sequelize db:seed:undo:all"
+  },
+  "repository": "recordio-server",
+  "license": "my licence",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md,html,yaml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@kazaar/express-error-handler": "^2.2.10",
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.18.3",
+    "celebrate": "^10.0.1",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "express-promise-router": "^3.0.3",
+    "express-restify-mongoose": "^5.0.0",
+    "helmet": "^3.15.0",
+    "http-errors": "^1.7.2",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.0",
+    "mongoose-autopopulate": "^0.9.1",
+    "mongoose-timestamp": "^0.6.0",
+    "morgan": "^1.9.1",
+    "mysql2": "^1.6.5",
+    "restify-mongoose": "^4.0.0",
+    "saslprep": "^1.0.3",
+    "sequelize": "^6.0.0",
+    "socket.io": "^2.2.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "husky": "^3.0.3",
+    "lint-staged": "^9.2.1",
+    "nodemon": "^1.19.1",
+    "eslint-config-prettier": "^5.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
+  },
+  "engines": {
+    "node": ">=10"
+  }
+}
