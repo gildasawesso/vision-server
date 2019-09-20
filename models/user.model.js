@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const timestamps = require('mongoose-timestamp');
 
 const { Schema } = mongoose;
 
@@ -12,5 +11,6 @@ const userSchema = new Schema({
   roles: [Schema.Types.ObjectId],
 });
 
-userSchema.plugin(timestamps);
+userSchema.plugin(require('mongoose-timestamp'));
+
 module.exports = mongoose.model('User', userSchema);

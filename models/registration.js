@@ -8,4 +8,6 @@ const registrationSchema = new Schema({
   schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
 });
 
+registrationSchema.plugin(require('mongoose-timestamp'));
+
 module.exports = mongoose.model('Registration', registrationSchema);

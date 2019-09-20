@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { getCode } = require('../services/common.service');
+
 const { Schema } = mongoose;
 
 const studentSchema = new Schema({
@@ -21,7 +23,17 @@ const studentSchema = new Schema({
   address: String,
   lastClass: String,
   lastSchool: String,
+  dropOut: { type: Boolean, default: false },
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
+});
+
+studentSchema.plugin(require('mongoose-timestamp'));
+
+studentSchema.pre('save', async function preSave(next) {
+  const student = this;
+
+  student.matricule = await getCode('studentId');
+  next();
 });
 
 module.exports = mongoose.model('Student', studentSchema);

@@ -9,6 +9,7 @@ const schoolSessionSchema = new Schema({
   schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
 });
 
+schoolSessionSchema.plugin(require('mongoose-timestamp'));
 schoolSessionSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('SchoolSession', schoolSessionSchema);

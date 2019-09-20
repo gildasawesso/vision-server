@@ -5,8 +5,10 @@ const { Schema } = mongoose;
 
 const schoolSchema = new Schema({
   name: String,
+  nameLong: String,
+  zipCode: String,
   address: String,
-  phone: String,
+  phones: [String],
   email: String,
   logo: { type: Schema.Types.ObjectId, ref: 'Media' },
 });

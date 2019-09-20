@@ -8,4 +8,6 @@ const subjectSchema = new Schema({
   professors: [{ type: Schema.Types.ObjectId, ref: 'Professor' }],
 });
 
+subjectSchema.plugin(require('mongoose-timestamp'));
+
 module.exports = mongoose.model('Subject', subjectSchema);

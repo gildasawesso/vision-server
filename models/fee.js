@@ -17,5 +17,6 @@ const feeSchema = new Schema({
 });
 
 feeSchema.plugin(require('mongoose-autopopulate'));
+feeSchema.plugin(require('mongoose-timestamp'));
 
 module.exports = mongoose.model('Fee', feeSchema);

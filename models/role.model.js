@@ -7,4 +7,6 @@ const roleSchema = new Schema({
   permissions: [{ type: Schema.Types.ObjectId, ref: 'Permission' }],
 });
 
+roleSchema.plugin(require('mongoose-timestamp'));
+
 module.exports = mongoose.model('Role', roleSchema);

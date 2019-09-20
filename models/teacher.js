@@ -13,4 +13,6 @@ const teacherSchema = new Schema({
   fireDate: Date,
 });
 
+teacherSchema.plugin(require('mongoose-timestamp'));
+
 module.exports = mongoose.model('Teacher', teacherSchema);
