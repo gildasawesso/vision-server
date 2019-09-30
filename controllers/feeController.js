@@ -1,4 +1,4 @@
-var feeModel = require('../models/fee.js');
+var feeModel = require('../models/fee-type.js');
 
 /**
  * feeController.js

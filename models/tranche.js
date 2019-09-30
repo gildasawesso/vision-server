@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const trancheSchema = new Schema({
   name: String,
+  amount: Number,
   dueDate: Date,
 });
 

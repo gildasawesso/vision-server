@@ -8,8 +8,10 @@ const { Schema } = mongoose;
 const contributionSchema = new Schema({
   code: String,
   student: { type: Schema.Types.ObjectId, ref: 'Student' },
-  schooYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
-  fee: { type: Schema.Types.ObjectId, ref: 'Fee' },
+  schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
+  registrationFee: { type: Schema.Types.ObjectId, ref: 'FeeType' },
+  schoolFee: { type: Schema.Types.ObjectId, ref: 'FeeType' },
+  classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
   amount: Number,
 });
 

@@ -7,8 +7,8 @@ const classroomSchema = new Schema({
   code: String,
   capacity: Number,
   teacher: { type: Schema.Types.ObjectId, ref: 'Teacher' },
-  registrationFee: { type: Schema.Types.ObjectId, ref: 'Fee', autopopulate: true },
-  schoolFee: { type: Schema.Types.ObjectId, ref: 'Fee', autopopulate: true },
+  registrationFee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
+  schoolFee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
   subjects: [{ type: Schema.Types.ObjectId, ref: 'Subject' }],
 });
 

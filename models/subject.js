@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const subjectSchema = new Schema({
   name: String,
   code: String,
-  professors: [{ type: Schema.Types.ObjectId, ref: 'Professor' }],
+  teachers: [{ type: Schema.Types.ObjectId, ref: 'Teacher' }],
 });
 
 subjectSchema.plugin(require('mongoose-timestamp'));

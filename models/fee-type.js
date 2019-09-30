@@ -2,10 +2,22 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const feeTypeSchema = new Schema({
+const trancheSchema = new Schema({
   name: String,
+  dueDate: Date,
+  amount: Number,
 });
 
-feeTypeSchema.plugin(require('mongoose-timestamp'));
+const feeSchema = new Schema({
+  name: String,
+  amount: Number,
+  isSchoolFee: Boolean,
+  tranches: [trancheSchema],
+  deadline: Date,
+  feeCategory: { type: Schema.Types.ObjectId, ref: 'FeeCategory', autopopulate: true },
+});
 
-module.exports = mongoose.model('FeeType', feeTypeSchema);
+feeSchema.plugin(require('mongoose-autopopulate'));
+feeSchema.plugin(require('mongoose-timestamp'));
+
+module.exports = mongoose.model('FeeType', feeSchema);
