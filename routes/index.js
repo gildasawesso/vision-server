@@ -17,6 +17,7 @@ const { auth } = require('../middlewares/jwt.middleware');
 // const schoolRouter = require('./school.routes');
 const schoolYearsRouter = require('./school-year.routes');
 const schoolYearsSessionsRouter = require('./school-session.routes');
+const printRouter = require('./print.route');
 // const resourcesRouter = require('./resource.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
@@ -37,6 +38,7 @@ restify.serve(router, Student, { name: 'students', prefix: '', version: '' });
 restify.serve(router, School, { name: 'schools', prefix: '', version: '' });
 router.use('/schoolyears', auth.optional, schoolYearsRouter);
 router.use('/schoolyears/sessions', auth.optional, schoolYearsSessionsRouter);
+router.use('/report/print', auth.optional, printRouter);
 
 router.use((req, res, next) => {
   next(new NotFound(`The requested route '${req.method} ${req.url}' does not exist.`));

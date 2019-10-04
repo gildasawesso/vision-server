@@ -11,6 +11,7 @@ const contributionSchema = new Schema({
   schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
   registrationFee: { type: Schema.Types.ObjectId, ref: 'FeeType' },
   schoolFee: { type: Schema.Types.ObjectId, ref: 'FeeType' },
+  fees: [Schema.Types.Mixed],
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
   amount: Number,
 });
