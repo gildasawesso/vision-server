@@ -33,13 +33,7 @@ module.exports = {
     algorithm: 'HS256',
     accessTokenExpiryTime: 60 * 60 * 24 * 30, // 60 seconds * 60 min * 24 h * 30 days = 1 mois
     refreshTokenExpiryTime: 60 * 60 * 24 * 30 * 2, // 60 seconds * 60 min * 24 h * 30 days * 2 = 2 mois
-    SECRET: process.env.JWT_SECRET,
-  },
-
-  ADMIN_JWT: {
-    algorithm: 'HS256',
-    accessTokenExpiryTime: 60 * 60 * 24 * 30, // 60 seconds * 60 min * 24 h * 30 days = 1 mois
-    refreshTokenExpiryTime: 60 * 60 * 24 * 30 * 2, // 60 seconds * 60 min * 24 h * 30 days * 2 = 2 mois
-    SECRET: process.env.JWT_ADMIN_SECRET,
+    secret: process.env.JWT_SECRET,
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
   },
 };

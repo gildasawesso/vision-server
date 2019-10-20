@@ -3,15 +3,13 @@ const { celebrate, Joi } = require('celebrate');
 const validateRegistration = celebrate({
   body: Joi.object().keys({
     firstname: Joi.string()
-      .email()
       .required()
       .trim(),
     lastname: Joi.string()
-      .email()
       .required()
       .trim(),
+    isAdmin: Joi.boolean(),
     password: Joi.string()
-      .regex(/^[a-zA-Z0-9]{7,30}$/)
       .required()
       .trim(),
     username: Joi.string()
@@ -26,7 +24,6 @@ const validateRegistration = celebrate({
 const validateAuthentication = celebrate({
   body: Joi.object().keys({
     username: Joi.string()
-      .email()
       .required()
       .trim(),
     password: Joi.string()

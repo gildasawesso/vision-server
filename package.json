@@ -53,6 +53,7 @@
     "mongoose-timestamp": "^0.6.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.5",
+    "office-converter": "^1.0.2",
     "pizzip": "^3.0.6",
     "restify-mongoose": "^4.0.0",
     "saslprep": "^1.0.3",

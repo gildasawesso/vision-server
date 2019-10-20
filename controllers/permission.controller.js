@@ -1,4 +1,4 @@
-var permissionModel = require('../models/permission.model.js');
+var permissionModel = require('../models/permission.js');
 
 /**
  * permission.controller.js

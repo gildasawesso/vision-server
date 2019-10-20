@@ -1,8 +1,8 @@
 const jwt = require('express-jwt');
 
-const { JWT, ADMIN_JWT } = require('../config');
+const { JWT } = require('../config');
 
-const { SECRET } = JWT;
+const { secret, refreshSecret } = JWT;
 
 function getToken(req) {
   const { headers, query } = req;
@@ -21,17 +21,18 @@ function getToken(req) {
 module.exports = {
   auth: {
     required: jwt({
-      secret: SECRET,
+      secret,
       requestProperty: 'auth',
       getToken,
     }),
-    admin: jwt({
-      secret: ADMIN_JWT.SECRET,
+    refresh: jwt({
+      secret: refreshSecret,
       requestProperty: 'auth',
+      credentialsRequired: false,
       getToken,
-    }).unless({ path: ['/admin/auth/signup', '/admin/auth/signin'] }),
+    }),
     optional: jwt({
-      secret: SECRET,
+      secret,
       requestProperty: 'auth',
       credentialsRequired: false,
       getToken,

@@ -11,39 +11,44 @@ async function isUserEmailExist(email) {
   return userFetched != null;
 }
 
-async function registerUser(newEmail, newPassword, newUsername) {
-  if (await isUserEmailExist(newEmail)) {
-    throw new BadRequest('User email existe already');
+async function isUsernameExist(username) {
+  const userFetched = await User.findOne({ username });
+
+  return userFetched != null;
+}
+
+async function registerUser(newUsername, newPassword, firstname, lastname, isAdmin) {
+  if (await isUsernameExist(newUsername)) {
+    throw new BadRequest('Username existe already');
   } else {
     const salt = await genSalt(10);
     const hashedPassword = await hash(newPassword, salt);
 
     const user = new User({
-      email: newEmail,
-      password: hashedPassword,
       username: newUsername,
+      password: hashedPassword,
+      firstname,
+      lastname,
+      isAdmin,
     });
 
-    const { id, email, username } = await user.save();
+    const { _id, username } = await user.save();
 
-    return generateToken({ id, email, username }, { id });
+    return generateToken({ _id, username }, { _id });
   }
 }
 
-async function authenticateUser(emailSubmitted, passwordSubmitted) {
-  if (await isUserEmailExist(emailSubmitted)) {
-    const { id, email, username, password } = await User.findOne({
-      where: { email: emailSubmitted },
-      attributes: { include: ['password'] },
-    });
+async function authenticateUser(usernameSubmitted, passwordSubmitted) {
+  if (await isUsernameExist(usernameSubmitted)) {
+    const { _id, username, password, firstname, lastname } = await User.findOne({ username: usernameSubmitted });
     const isSamePassword = await compare(passwordSubmitted, password);
 
     if (isSamePassword) {
-      return generateToken({ id, email, username }, { id });
+      return generateToken({ _id, username, firstname, lastname }, { _id });
     }
-    throw new Unauthorized();
+    throw new Unauthorized("L'utilisateur ou le mot de passe est incorrecte");
   } else {
-    throw new BadRequest("User email doesn't exsit");
+    throw new Unauthorized("L'utilisateur ou le mot de passe est incorrecte");
   }
 }
 
@@ -85,13 +90,13 @@ async function authenticateAdmin(emailSubmitted, passwordSubmitted) {
 }
 
 async function renewToken(refresToken) {
-  const { id } = decodeToken(refresToken);
-  const { email, username, disabled } = await User.findByPk(id);
+  const { _id } = decodeToken(refresToken);
+  const { username, firstname, lastname, disabled } = await User.findById(_id);
 
   if (disabled) {
     throw new Unauthorized();
   } else {
-    return generateToken({ id, email, username }, { id });
+    return generateToken({ _id, username, firstname, lastname }, { _id });
   }
 }
 

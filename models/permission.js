@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const permissionSchema = new Schema({
   name: String,
-  resource: { type: Schema.Types.ObjectId, ref: 'AppResource' },
+  description: String,
 });
 
 permissionSchema.plugin(require('mongoose-timestamp'));

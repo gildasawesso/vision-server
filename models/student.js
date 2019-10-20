@@ -24,10 +24,8 @@ const studentSchema = new Schema({
   lastClass: String,
   lastSchool: String,
   dropOut: { type: Boolean, default: false },
-  classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
+  classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', autopopulate: true },
 });
-
-studentSchema.plugin(require('mongoose-timestamp'));
 
 studentSchema.pre('save', async function preSave(next) {
   const student = this;
@@ -35,5 +33,7 @@ studentSchema.pre('save', async function preSave(next) {
   student.matricule = await getCode('studentId');
   next();
 });
+
+studentSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('Student', studentSchema);

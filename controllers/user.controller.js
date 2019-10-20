@@ -1,124 +1,48 @@
-var userModel = require('../models/user.model.js');
+const { userPermissions } = require('../services/permissions.service');
+const { usersCount, userInformations, updateUser } = require('../services/users.service');
+const { registerUser } = require('../services/auth.service');
+const { decodeToken } = require('../utils/jwt');
 
-/**
- * user.controller.js
- *
- * @description :: Server-side logic for managing users.
- */
 module.exports = {
+  add: async (req, res) => {
+    const data = req.body;
 
-    /**
-     * userController.list()
-     */
-    list: function (req, res) {
-        userModel.find(function (err, users) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user.',
-                    error: err
-                });
-            }
-            return res.json(users);
-        });
-    },
+    const payload = await registerUser(data.username, data.password, data.firstname, data.lastname, data.isAdmin);
+    const { _id } = decodeToken(payload.accessToken);
+    const user = await userInformations(_id);
 
-    /**
-     * userController.show()
-     */
-    show: function (req, res) {
-        var id = req.params.id;
-        userModel.findOne({_id: id}, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user.',
-                    error: err
-                });
-            }
-            if (!user) {
-                return res.status(404).json({
-                    message: 'No such user'
-                });
-            }
-            return res.json(user);
-        });
-    },
+    delete data.password;
+    await updateUser(_id, data);
 
-    /**
-     * userController.create()
-     */
-    create: function (req, res) {
-        var user = new userModel({
-			username : req.body.username,
-			firstname : req.body.firstname,
-			lastname : req.body.lastname,
-			job : req.body.job,
-			password : req.body.password,
-			roles : req.body.roles
+    return res.json(user);
+  },
 
-        });
+  permissions: async (req, res) => {
+    const { _id } = req.auth;
+    const permissions = await userPermissions(_id);
 
-        user.save(function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating user',
-                    error: err
-                });
-            }
-            return res.status(201).json(user);
-        });
-    },
+    return res.json(permissions);
+  },
 
-    /**
-     * userController.update()
-     */
-    update: function (req, res) {
-        var id = req.params.id;
-        userModel.findOne({_id: id}, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user',
-                    error: err
-                });
-            }
-            if (!user) {
-                return res.status(404).json({
-                    message: 'No such user'
-                });
-            }
+  count: async (req, res) => {
+    const count = await usersCount();
 
-            user.username = req.body.username ? req.body.username : user.username;
-			user.firstname = req.body.firstname ? req.body.firstname : user.firstname;
-			user.lastname = req.body.lastname ? req.body.lastname : user.lastname;
-			user.job = req.body.job ? req.body.job : user.job;
-			user.password = req.body.password ? req.body.password : user.password;
-			user.roles = req.body.roles ? req.body.roles : user.roles;
+    return res.json(count);
+  },
 
-            user.save(function (err, user) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating user.',
-                        error: err
-                    });
-                }
+  me: async (req, res) => {
+    const { _id } = req.auth;
+    const user = await userInformations(_id);
 
-                return res.json(user);
-            });
-        });
-    },
+    return res.json(user);
+  },
 
-    /**
-     * userController.remove()
-     */
-    remove: function (req, res) {
-        var id = req.params.id;
-        userModel.findByIdAndRemove(id, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the user.',
-                    error: err
-                });
-            }
-            return res.status(204).json();
-        });
-    }
+  update: async (req, res) => {
+    const { _id } = req.auth;
+    const data = req.body;
+
+    const user = await updateUser(_id, data);
+
+    return res.json(user);
+  },
 };

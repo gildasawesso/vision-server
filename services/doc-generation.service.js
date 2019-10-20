@@ -1,8 +1,16 @@
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
-// eslint-disable-next-line node/no-unsupported-features/node-builtins
 const fs = require('fs').promises;
 const path = require('path');
+const converter = require('office-converter')();
+
+async function generatePDF(inputFile) {
+  return new Promise((resolve, reject) => {
+    converter.generatePdf(inputFile, (err, result) => {
+      return err ? reject(err) : resolve(result.outputFile);
+    });
+  });
+}
 
 async function generateDocument(documentName, data) {
   const content = await fs.readFile(`${path.resolve()}/templates/${documentName}.docx`, 'binary');
@@ -28,9 +36,11 @@ async function generateDocument(documentName, data) {
 
   const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
-  await fs.writeFile(path.resolve(__dirname, 'output.docx'), buffer);
+  const filepath = `${path.resolve()}/reports/output.docx`;
 
-  return { good: 'good' };
+  await fs.writeFile(filepath, buffer);
+
+  return generatePDF(filepath);
 }
 
 module.exports.generateReport = generateDocument;

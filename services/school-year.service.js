@@ -1,7 +1,14 @@
 const { SchoolYear } = require('../models');
+const { User } = require('../models');
 
 async function getSchoolYears() {
   return SchoolYear.find();
+}
+
+async function getSchoolYearsForUser(_id) {
+  const user = await User.findById(_id);
+
+  return SchoolYear.find({ school: user.schools[0] });
 }
 
 async function getSchoolYear(id) {
@@ -35,3 +42,4 @@ module.exports.getSchoolYear = getSchoolYear;
 module.exports.addSchoolYear = addSchoolYear;
 module.exports.addSession = addSession;
 module.exports.removeSession = removeSession;
+module.exports.userSchoolYears = getSchoolYearsForUser;

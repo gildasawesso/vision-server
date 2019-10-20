@@ -6,7 +6,7 @@ async function print(req, res) {
 
   const file = await generateReport(templateName, data);
 
-  await res.json(file);
+  await res.sendFile(file);
 }
 
 module.exports.print = print;

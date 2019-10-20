@@ -13,16 +13,20 @@ const { Registration } = require('../models');
 const { Payment } = require('../models');
 const { Discount } = require('../models');
 const { School } = require('../models');
+const { User } = require('../models');
+const { Role } = require('../models');
+const { Permission } = require('../models');
 const { auth } = require('../middlewares/jwt.middleware');
 // const schoolRouter = require('./school.routes');
 const schoolYearsRouter = require('./school-year.routes');
-const schoolYearsSessionsRouter = require('./school-session.routes');
 const printRouter = require('./print.route');
+const authRouter = require('./auth.routes');
+const usersRouter = require('./user.routes');
 // const resourcesRouter = require('./resource.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
 // router.get('/docs', (req, res) => res.redirect('/docs'));
-// router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 // router.use('/users', auth.required, userRouter);
 // router.use('/collaborations', auth.required, collaborationRouter);
 restify.serve(router, PermissionResource, { name: 'app/resources', prefix: '', version: '' });
@@ -36,8 +40,11 @@ restify.serve(router, Teacher, { name: 'teachers', prefix: '', version: '' });
 restify.serve(router, Subject, { name: 'subjects', prefix: '', version: '' });
 restify.serve(router, Student, { name: 'students', prefix: '', version: '' });
 restify.serve(router, School, { name: 'schools', prefix: '', version: '' });
-router.use('/schoolyears', auth.optional, schoolYearsRouter);
-router.use('/schoolyears/sessions', auth.optional, schoolYearsSessionsRouter);
+restify.serve(router, Role, { name: 'roles', prefix: '', version: '' });
+restify.serve(router, Permission, { name: 'permissions', prefix: '', version: '' });
+restify.serve(router, User, { name: 'r/users', prefix: '', version: '' });
+router.use('/users', auth.required, usersRouter);
+router.use('/schoolyears', auth.required, schoolYearsRouter);
 router.use('/report/print', auth.optional, printRouter);
 
 router.use((req, res, next) => {

@@ -1,8 +1,15 @@
-const { getSchoolYears, getSchoolYear, addSchoolYear, addSession, removeSession } = require('../services/school-year.service');
+const {
+  userSchoolYears,
+  getSchoolYear,
+  addSchoolYear,
+  addSession,
+  removeSession,
+} = require('../services/school-year.service');
 
 module.exports = {
   list: async (req, res) => {
-    const schoolYears = await getSchoolYears();
+    const { _id } = req.auth;
+    const schoolYears = await userSchoolYears(_id);
 
     return res.json(schoolYears);
   },

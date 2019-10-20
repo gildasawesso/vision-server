@@ -1,30 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var userController = require('../controllers/user.controller.js');
+const router = require('express-promise-router')();
 
-/*
- * GET
- */
-router.get('/', userController.list);
+const userController = require('../controllers/user.controller.js');
 
-/*
- * GET
- */
-router.get('/:id', userController.show);
-
-/*
- * POST
- */
-router.post('/', userController.create);
-
-/*
- * PUT
- */
-router.put('/:id', userController.update);
-
-/*
- * DELETE
- */
-router.delete('/:id', userController.remove);
+router.get('/permissions', userController.permissions);
+router.get('/count', userController.count);
+router.get('/me', userController.me);
+router.post('/', userController.add);
 
 module.exports = router;

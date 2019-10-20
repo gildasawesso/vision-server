@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const timestamps = require('mongoose-timestamp');
 
 const { Schema } = mongoose;
 
@@ -13,7 +12,7 @@ const schoolYearSchema = new Schema({
   startDate: Date,
   endDate: Date,
   sessions: [schoolSessionSchema],
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
-schoolYearSchema.plugin(timestamps);
 module.exports = mongoose.model('SchoolYear', schoolYearSchema);
