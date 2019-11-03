@@ -6,6 +6,7 @@ const registrationSchema = new Schema({
   student: { type: Schema.Types.ObjectId, ref: 'Student' },
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
   schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear' },
+  registerAt: { type: Date, default: Date.now },
 });
 
 registrationSchema.plugin(require('mongoose-timestamp'));
