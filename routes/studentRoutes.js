@@ -1,30 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var studentController = require('../controllers/studentController.js');
+const router = require('express-promise-router')();
 
-/*
- * GET
- */
-router.get('/', studentController.list);
+const studentController = require('../controllers/studentController');
 
-/*
- * GET
- */
-router.get('/:id', studentController.show);
-
-/*
- * POST
- */
-router.post('/', studentController.create);
-
-/*
- * PUT
- */
+router.get('/', studentController.get);
+router.get('/:id', studentController.getOne);
+router.post('/', studentController.add);
 router.put('/:id', studentController.update);
-
-/*
- * DELETE
- */
-router.delete('/:id', studentController.remove);
+router.delete('/:id', studentController.delete);
 
 module.exports = router;
