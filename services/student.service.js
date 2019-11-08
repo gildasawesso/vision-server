@@ -16,7 +16,7 @@ module.exports = {
   },
 
   updateStudent: async function updateStudent(id, data) {
-    return Student.findOneAndUpdate({ _id: id }, data, { new: true });
+    return Student.findByIdAndUpdate(id, data, { new: true });
   },
 
   deleteStudent: async function deleteStudent(id) {

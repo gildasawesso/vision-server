@@ -3,6 +3,8 @@ const { addStudent, getAllStudents, updateStudent } = require('../services/stude
 module.exports = {
   add: async (req, res) => {
     const data = req.body;
+
+    console.log(data);
     const student = await addStudent(data);
 
     await res.json(student);
