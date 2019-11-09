@@ -23,6 +23,8 @@ const printRouter = require('./print.route');
 const authRouter = require('./auth.routes');
 const usersRouter = require('./user.routes');
 const studentRouter = require('./studentRoutes');
+const registrationRouter = require('./registrationRoutes');
+const examinationRouter = require('./examinationRoutes');
 // const resourcesRouter = require('./resource.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
@@ -34,7 +36,6 @@ restify.serve(router, PermissionResource, { name: 'app/resources', prefix: '', v
 restify.serve(router, Classroom, { name: 'classrooms', prefix: '', version: '' });
 restify.serve(router, FeeCategory, { name: 'fees/categories', prefix: '', version: '' });
 restify.serve(router, FeeType, { name: 'fees/types', prefix: '', version: '' });
-restify.serve(router, Registration, { name: 'registrations', prefix: '', version: '' });
 restify.serve(router, Payment, { name: 'payments', prefix: '', version: '' });
 restify.serve(router, Discount, { name: 'discounts', prefix: '', version: '' });
 restify.serve(router, Teacher, { name: 'teachers', prefix: '', version: '' });
@@ -43,6 +44,9 @@ restify.serve(router, School, { name: 'schools', prefix: '', version: '' });
 restify.serve(router, Role, { name: 'roles', prefix: '', version: '' });
 restify.serve(router, Permission, { name: 'permissions', prefix: '', version: '' });
 restify.serve(router, User, { name: 'r/users', prefix: '', version: '' });
+
+router.use('/examinations', auth.optional, examinationRouter);
+router.use('/registrations', auth.optional, registrationRouter);
 router.use('/students', auth.optional, studentRouter);
 router.use('/users', auth.required, usersRouter);
 router.use('/schoolyears', auth.required, schoolYearsRouter);

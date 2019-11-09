@@ -1,30 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var registrationController = require('../controllers/registrationController.js');
+const router = require('express-promise-router')();
 
-/*
- * GET
- */
-router.get('/', registrationController.list);
+const registrationController = require('../controllers/registrationController');
 
-/*
- * GET
- */
-router.get('/:id', registrationController.show);
-
-/*
- * POST
- */
-router.post('/', registrationController.create);
-
-/*
- * PUT
- */
-router.put('/:id', registrationController.update);
-
-/*
- * DELETE
- */
-router.delete('/:id', registrationController.remove);
+router.get('/', registrationController.all);
+router.post('/', registrationController.add);
 
 module.exports = router;

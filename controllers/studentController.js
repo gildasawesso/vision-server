@@ -1,31 +1,35 @@
-const { addStudent, getAllStudents, updateStudent } = require('../services/student.service');
+const { Student } = require('../models');
+const DbContext = require('../services/db_context');
+
+const Students = new DbContext(Student);
 
 module.exports = {
   add: async (req, res) => {
     const data = req.body;
 
-    console.log(data);
-    const student = await addStudent(data);
+    const student = await Students.add(data);
 
     await res.json(student);
   },
 
   get: async (req, res) => {
-    const students = await getAllStudents();
+    const students = await Students.all();
 
     await res.json(students);
   },
-
-  getOne: () => {},
 
   update: async (req, res) => {
     const { id } = req.params;
     const data = req.body;
 
-    const studentUpdated = await updateStudent(id, data);
+    const studentUpdated = await Students.update(id, data);
 
     await res.json(studentUpdated);
   },
 
-  delete: () => {},
+  delete: async (req, res) => {
+    const student = await Students.delete(req.params.id);
+
+    await res.json(student);
+  },
 };
