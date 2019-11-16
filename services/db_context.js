@@ -7,6 +7,10 @@ module.exports = class DbContext {
     return this.Model.find();
   }
 
+  async find(options) {
+    return this.Model.find(options);
+  }
+
   one(id) {
     return this.Model.findById(id);
   }
@@ -22,4 +26,4 @@ module.exports = class DbContext {
   async delete(id) {
     return this.Model.findByIdAndDelete(id);
   }
-}
+};

@@ -12,6 +12,7 @@
   },
   "plugins": ["promise"],
   "rules": {
+    "no-underscore-dangle": [0, { "allow": [] }],
     "linebreak-style": ["error", "windows"],
     "no-unused-vars": [
       "error",
