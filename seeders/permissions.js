@@ -59,4 +59,40 @@ module.exports.permissions = [
     name: 'deleteExamination',
     description: 'Supprimer une examination',
   },
+  {
+    name: 'addClassroom',
+    description: 'Ajouter une classe',
+  },
+  {
+    name: 'editClassroom',
+    description: 'Modifier une classe',
+  },
+  {
+    name: 'deleteClassroom',
+    description: 'Supprimer une classe',
+  },
+  {
+    name: 'addSubject',
+    description: 'Ajouter un cour',
+  },
+  {
+    name: 'editSubject',
+    description: 'Modifier un cour',
+  },
+  {
+    name: 'deleteSubject',
+    description: 'Supprimer un cour',
+  },
+  {
+    name: 'addTeacher',
+    description: 'Ajouter un professeur',
+  },
+  {
+    name: 'editTeacher',
+    description: 'Modifier un professeur',
+  },
+  {
+    name: 'deleteTeacher',
+    description: 'Supprimer un professeur',
+  },
 ];
