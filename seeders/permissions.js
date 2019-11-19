@@ -4,20 +4,32 @@ module.exports.permissions = [
     description: "Accès au module d'enrégistrement des élèves",
   },
   {
+    name: 'accessAcademicModule',
+    description: 'Accès au module Académie',
+  },
+  {
+    name: 'editStudent',
+    description: 'Modifier un élève',
+  },
+  {
+    name: 'deleteStudent',
+    description: 'Supprimer un élève',
+  },
+  {
+    name: 'accessFinanceModule',
+    description: 'Accès au module de la Finance',
+  },
+  {
+    name: 'addPayment',
+    description: 'Ajouter un payement',
+  },
+  {
     name: 'editPayment',
     description: "Modification d'un payement",
   },
   {
     name: 'deletePayment',
     description: "Suppression d'un payement",
-  },
-  {
-    name: 'accessAcademicModule',
-    description: 'Accès au module Académie',
-  },
-  {
-    name: 'accessFinanceModule',
-    description: 'Accès au module de la Finance',
   },
   {
     name: 'accessStaffModule',
@@ -28,23 +40,23 @@ module.exports.permissions = [
     description: 'Accès au module des Paramètres',
   },
   {
-    name: 'deleteStudent',
-    description: 'Supprimer un élève',
+    name: 'accessNotesModule',
+    description: 'Accès au module des Notes',
   },
   {
-    name: 'editStudent',
-    description: 'Modifier un élève',
+    name: 'addExamination',
+    description: 'Ajouter une examination',
   },
   {
-    name: 'addPayment',
-    description: 'Ajouter un payement',
+    name: 'addExaminationType',
+    description: "Ajouter un type d'examen",
   },
   {
-    name: 'editPayment',
-    description: 'Modifier un payement',
+    name: 'editExamination',
+    description: 'Modifier une examination',
   },
   {
-    name: 'deletePayment',
-    description: 'Supprimer un payement',
+    name: 'deleteExamination',
+    description: 'Supprimer une examination',
   },
 ];

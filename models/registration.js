@@ -7,7 +7,8 @@ const registrationSchema = new Schema({
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', autopopulate: true },
   schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear', autopopulate: true },
   isReregistration: { type: Boolean, default: false },
-  registerAt: { type: Date, default: Date.now },
+  registrationDate: { type: Date, default: Date.now },
+  feesReduction: { type: Number, default: 0 },
 });
 
 registrationSchema.plugin(require('mongoose-autopopulate'));

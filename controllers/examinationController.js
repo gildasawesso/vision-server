@@ -82,7 +82,11 @@ module.exports = {
     await res.json(examinationType);
   },
 
-  updateType: () => {},
+  updateType: async (req, res) => {
+    const examinationType = await ExaminationTypes.update(req.params.id, req.body);
+
+    await res.json(examinationType);
+  },
 
   deleteType: async (req, res) => {
     const { id } = req.params;

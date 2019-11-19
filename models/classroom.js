@@ -9,6 +9,7 @@ const classroomSchema = new Schema({
   teacher: { type: Schema.Types.ObjectId, ref: 'Teacher', autopopulate: true },
   registrationFee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
   schoolFee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
+  reregistrationFee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
   subjects: [{ type: Schema.Types.ObjectId, ref: 'Subject', autopopulate: true }],
 });
 

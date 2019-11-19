@@ -10,7 +10,7 @@ router.patch('/:id', examinationController.update);
 router.delete('/:id', examinationController.delete);
 router.get('/types', examinationController.getTypes);
 router.post('/types', examinationController.addType);
-router.put('/types/:id', examinationController.updateType);
+router.patch('/types/:id', examinationController.updateType);
 router.delete('/types/:id', examinationController.deleteType);
 
 module.exports = router;
