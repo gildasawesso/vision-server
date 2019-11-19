@@ -5,6 +5,13 @@ const logger = require('../config/winston');
 const { db } = require('../config');
 const { Permission } = require('../models');
 const { permissions } = require('../seeders/permissions');
+const DbContext = require('../services/db_context');
+
+const Permissions = new DbContext(Permission);
+
+function isPermissionIncluded(permissionsArray, item) {
+  return permissionsArray.find(i => i.name === item.name) !== undefined;
+}
 
 function connectToDatabase() {
   mongoose.connect(`mongodb://${db.username}:${db.password}@${db.host}/${db.database}`, {
@@ -24,10 +31,16 @@ function connectToDatabase() {
   connection.once('open', async () => {
     logger.info(`${green('connection success with the database')}`);
 
-    const dbPermissions = await Permission.find();
+    const dbPermissions = await Permissions.all();
 
     if (dbPermissions === undefined || dbPermissions == null || dbPermissions.length <= 0) {
       Permission.create(permissions);
+    }
+
+    if (dbPermissions.length < permissions.length) {
+      const permissionsNotInDatabase = permissions.filter(p => !isPermissionIncluded(dbPermissions, p));
+
+      Permission.create(permissionsNotInDatabase);
     }
   });
 }
