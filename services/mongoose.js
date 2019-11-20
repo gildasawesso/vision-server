@@ -31,18 +31,17 @@ function connectToDatabase() {
   connection.once('open', async () => {
     logger.info(`${green('connection success with the database')}`);
 
-    const dbPermissions = await Permissions.all();
+    let dbPermissions = await Permissions.all();
 
     if (dbPermissions === undefined || dbPermissions == null || dbPermissions.length <= 0) {
-      Permission.create(permissions);
+      dbPermissions = await Permission.create(permissions);
     }
 
     const permissionsNotInDatabase = permissions.filter(p => !isPermissionIncluded(dbPermissions, p));
 
     if (permissionsNotInDatabase.length > 0) {
-      Permission.create(permissionsNotInDatabase);
+      await Permission.create(permissionsNotInDatabase);
     }
-
   });
 }
 
