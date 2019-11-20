@@ -37,11 +37,12 @@ function connectToDatabase() {
       Permission.create(permissions);
     }
 
-    if (dbPermissions.length < permissions.length) {
-      const permissionsNotInDatabase = permissions.filter(p => !isPermissionIncluded(dbPermissions, p));
+    const permissionsNotInDatabase = permissions.filter(p => !isPermissionIncluded(dbPermissions, p));
 
+    if (permissionsNotInDatabase.length > 0) {
       Permission.create(permissionsNotInDatabase);
     }
+
   });
 }
 
