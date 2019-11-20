@@ -52,6 +52,14 @@ module.exports.permissions = [
     description: "Ajouter un type d'examen",
   },
   {
+    name: 'editExaminationType',
+    description: "Modifier un type d'examen",
+  },
+  {
+    name: 'deleteExaminationType',
+    description: "Supprimer un type d'examen",
+  },
+  {
     name: 'editExamination',
     description: 'Modifier une examination',
   },
