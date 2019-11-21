@@ -7,7 +7,9 @@ module.exports = {
   add: async (req, res) => {
     const data = req.body;
 
-    const registration = await Registrations.add(data);
+    let registration = await Registrations.add(data);
+
+    registration = await Registrations.one(registration._id);
 
     await res.json(registration);
   },

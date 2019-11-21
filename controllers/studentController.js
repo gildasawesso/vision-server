@@ -1,5 +1,4 @@
 const { Student } = require('../models');
-
 const DbContext = require('../services/db_context');
 
 const Students = new DbContext(Student);
@@ -8,7 +7,9 @@ module.exports = {
   add: async (req, res) => {
     const data = req.body;
 
-    const student = await Students.add(data);
+    let student = await Students.add(data);
+
+    student = await Students.one(student._id);
 
     await res.json(student);
   },
