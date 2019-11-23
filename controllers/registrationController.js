@@ -14,6 +14,16 @@ module.exports = {
     await res.json(registration);
   },
 
+  update: async (req, res) => {
+    const data = req.body;
+
+    let registration = await Registrations.update(req.params.id, data);
+
+    registration = await Registrations.one(registration._id);
+
+    await res.json(registration);
+  },
+
   all: async (req, res) => {
     const registrations = await Registrations.all();
 
