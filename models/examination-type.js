@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const examinationTypeSchema = new Schema({
   name: String,
-  order: Number,
+  group: Number,
 });
 
 examinationTypeSchema.plugin(require('mongoose-autopopulate'));

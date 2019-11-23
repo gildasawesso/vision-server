@@ -12,35 +12,35 @@ async function generatePDF(inputFile) {
   });
 }
 
-async function generateDocument(documentName, data) {
-  const content = await fs.readFile(`${path.resolve()}/templates/${documentName}.docx`, 'binary');
-  const zip = new PizZip(content);
-  const doc = new Docxtemplater();
+module.exports = {
+  generateReport: async (documentName, data) => {
+    const content = await fs.readFile(`${path.resolve()}/templates/${documentName}.docx`, 'binary');
+    const zip = new PizZip(content);
+    const doc = new Docxtemplater();
 
-  doc.loadZip(zip);
-  doc.setData(data);
+    doc.loadZip(zip);
+    doc.setData(data);
 
-  try {
-    doc.render();
-  } catch (error) {
-    const e = {
-      message: error.message,
-      name: error.name,
-      stack: error.stack,
-      properties: error.properties,
-    };
+    try {
+      doc.render();
+    } catch (error) {
+      const e = {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+        properties: error.properties,
+      };
 
-    console.error(JSON.stringify({ error: e }));
-    throw error;
-  }
+      console.error(JSON.stringify({ error: e }));
+      throw error;
+    }
 
-  const buffer = doc.getZip().generate({ type: 'nodebuffer' });
+    const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
-  const filepath = `${path.resolve()}/reports/output.docx`;
+    const filepath = `${path.resolve()}/reports/output.docx`;
 
-  await fs.writeFile(filepath, buffer);
+    await fs.writeFile(filepath, buffer);
 
-  return generatePDF(filepath);
-}
-
-module.exports.generateReport = generateDocument;
+    return generatePDF(filepath);
+  },
+};
