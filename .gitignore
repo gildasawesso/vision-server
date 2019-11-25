@@ -1,5 +1,6 @@
 #custom
-/reports
+/reports/*.docx
+/reports/*.pdf
 # Created by https://www.gitignore.io/api/node,macos,angular,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,macos,angular,intellij+all,visualstudiocode
 
