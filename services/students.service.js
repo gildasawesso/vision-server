@@ -7,4 +7,8 @@ module.exports = {
   getStudents: async (classroomId, schoolyearId) => {
     return Admissions.find({ classroom: classroomId, schoolYear: schoolyearId });
   },
+
+  removeStudent: async (studentId) => {
+
+  }
 };

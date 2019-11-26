@@ -29,4 +29,10 @@ module.exports = {
 
     await res.json(registrations);
   },
+
+  delete: async (req, res) => {
+    const registration = await Registrations.delete(req.params.id);
+
+    await res.json(registration);
+  },
 };
