@@ -1,45 +1,75 @@
-const { SchoolYear } = require('../models');
-const { User } = require('../models');
+const moment = require('moment');
 
-async function getSchoolYears() {
-  return SchoolYear.find();
-}
+const { SchoolYear, User } = require('../models');
+const DbContext = require('../services/db_context');
 
-async function getSchoolYearsForUser(_id) {
-  const user = await User.findById(_id);
+const SchoolYears = new DbContext(SchoolYear);
 
-  return SchoolYear.find({ school: user.schools[0] });
-}
+module.exports = {
+  getCurrentSchoolYear: async () => {
+    const schoolYears = await SchoolYears.all();
+    const now = moment();
 
-async function getSchoolYear(id) {
-  return SchoolYear.findOne({ _id: id });
-}
+    return schoolYears.find(s => {
+      const start = moment(s.startDate);
+      const end = moment(s.endDate);
 
-async function addSchoolYear(data) {
-  const schoolYear = new SchoolYear(data);
+      return now.isSameOrAfter(start) && now.isSameOrBefore(end);
+    });
+  },
 
-  return schoolYear.save();
-}
+  getCurrentSession: async () => {
+    const schoolYears = await SchoolYears.all();
+    const now = moment();
 
-async function addSession(id, data) {
-  const schoolYear = await SchoolYear.findById(id);
+    const schoolYear = schoolYears.find(s => {
+      const start = moment(s.startDate);
+      const end = moment(s.endDate);
 
-  schoolYear.sessions.push(data);
+      return now.isSameOrAfter(start) && now.isSameOrBefore(end);
+    });
 
-  return schoolYear.save();
-}
+    return schoolYear.sessions.find(s => {
+      const start = moment(s.startDate);
+      const end = moment(s.endDate);
 
-async function removeSession(schoolYearId, sessionId) {
-  const schoolYear = await SchoolYear.findById(schoolYearId);
+      return now.isSameOrAfter(start) && now.isSameOrBefore(end);
+    });
+  },
 
-  schoolYear.sessions.id(sessionId).remove();
+  getSchoolYears: () => {
+    return SchoolYear.find();
+  },
 
-  return schoolYear.save();
-}
+  getSchoolYearsForUser: async _id => {
+    const user = await User.findById(_id);
 
-module.exports.getSchoolYears = getSchoolYears;
-module.exports.getSchoolYear = getSchoolYear;
-module.exports.addSchoolYear = addSchoolYear;
-module.exports.addSession = addSession;
-module.exports.removeSession = removeSession;
-module.exports.userSchoolYears = getSchoolYearsForUser;
+    return SchoolYear.find({ school: user.schools[0] });
+  },
+
+  getSchoolYear: id => {
+    return SchoolYear.findOne({ _id: id });
+  },
+
+  addSchoolYear: data => {
+    const schoolYear = new SchoolYear(data);
+
+    return schoolYear.save();
+  },
+
+  addSession: async (id, data) => {
+    const schoolYear = await SchoolYear.findById(id);
+
+    schoolYear.sessions.push(data);
+
+    return schoolYear.save();
+  },
+
+  removeSession: async (schoolYearId, sessionId) => {
+    const schoolYear = await SchoolYear.findById(schoolYearId);
+
+    schoolYear.sessions.id(sessionId).remove();
+
+    return schoolYear.save();
+  },
+};
