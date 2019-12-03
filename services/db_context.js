@@ -7,8 +7,8 @@ module.exports = class DbContext {
     return this.Model.find();
   }
 
-  async find(options) {
-    return this.Model.find(options);
+  async find(selection, projection, options) {
+    return this.Model.find(selection, projection, options);
   }
 
   one(id) {

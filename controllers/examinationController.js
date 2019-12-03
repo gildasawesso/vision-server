@@ -1,20 +1,21 @@
 const { Examination, ExaminationType } = require('../models');
 const { getStudents } = require('../services/students.service');
+const { getCurrentSchoolYear } = require('../services/school-year.service');
 const DbContext = require('../services/db_context');
 
 const Examinations = new DbContext(Examination);
 const ExaminationTypes = new DbContext(ExaminationType);
 
 function isRegistrationInMarks(marks, registration) {
-  const x = marks.find(m => m.student._id.toString() === registration.student._id.toString()) !== undefined;
-  console.log(x);
-
-  return x;
+  return marks.find(m => m.student._id.toString() === registration.student._id.toString()) !== undefined;
 }
 
 module.exports = {
   get: async (req, res) => {
-    const examinations = await Examinations.all();
+    const examinations = await Examinations.find(null, null, { sort: { _id: -1 } });
+    const schoolYear = await getCurrentSchoolYear();
+
+    examinations.filter(e => e.schoolYear === schoolYear._id);
 
     await res.json(examinations);
   },
