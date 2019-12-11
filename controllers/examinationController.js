@@ -30,7 +30,7 @@ module.exports = {
     registrations.forEach(registration => {
       examination.marks.push({
         student: registration.student,
-        mark: 0,
+        mark: null,
       });
     });
     await examination.save();
@@ -49,7 +49,7 @@ module.exports = {
       if (!isRegistrationInMarks(examination.marks, registration)) {
         examination.marks.push({
           student: registration.student,
-          mark: 0,
+          mark: null,
         });
       }
     });
