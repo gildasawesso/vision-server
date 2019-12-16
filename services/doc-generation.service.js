@@ -5,6 +5,7 @@ const fs2 = require('fs');
 const path = require('path');
 const converter = require('office-converter')();
 const merge = require('easy-pdf-merge');
+const XLSX = require('xlsx');
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index += 1) {
@@ -112,5 +113,17 @@ module.exports = {
     const templateName = `bulletin-${dataArray[0].examinationTypes.length}-notes`;
 
     return this.generateReport(templateName, dataArray[0]);
+  },
+
+  exportExcelReport: (data, header) => {
+    const workSheet = header ? XLSX.utils.json_to_sheet(data, { header }) : XLSX.utils.json_to_sheet(data);
+    const workBook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'Export');
+    const reportFile = `${path.resolve()}/reports/export-excel.xlsx`;
+
+    XLSX.writeFile(workBook, reportFile, { type: 'file' });
+
+    return reportFile;
   },
 };

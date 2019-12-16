@@ -1,4 +1,4 @@
-const { generateReport, generateMergedDocument } = require('../services/doc-generation.service');
+const { generateReport, generateMergedDocument, exportExcelReport } = require('../services/doc-generation.service');
 
 module.exports = {
   print: async (req, res) => {
@@ -14,6 +14,13 @@ module.exports = {
     const dataArray = req.body;
 
     const file = await generateMergedDocument(dataArray);
+
+    await res.sendFile(file);
+  },
+
+  exportExcel: async (req, res) => {
+    const { data, header } = req.body;
+    const file = exportExcelReport(data, header);
 
     await res.sendFile(file);
   },
