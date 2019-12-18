@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 
 const schoolSchema = new Schema({
   name: String,
+  subName: String,
   zipCode: String,
   address: String,
   phone: String,
