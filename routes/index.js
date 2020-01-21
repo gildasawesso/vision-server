@@ -25,6 +25,7 @@ const usersRouter = require('./user.routes');
 const studentRouter = require('./studentRoutes');
 const registrationRouter = require('./registrationRoutes');
 const examinationRouter = require('./examinationRoutes');
+const spendingTypesRouter = require('./spending-type.routes');
 // const resourcesRouter = require('./resource.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
@@ -51,6 +52,7 @@ router.use('/students', auth.optional, studentRouter);
 router.use('/users', auth.required, usersRouter);
 router.use('/schoolyears', auth.required, schoolYearsRouter);
 router.use('/report/print', auth.optional, printRouter);
+router.use('/spending/types', auth.required, spendingTypesRouter);
 
 router.use((req, res, next) => {
   next(new NotFound(`The requested route '${req.method} ${req.url}' does not exist.`));

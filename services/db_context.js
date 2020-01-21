@@ -3,8 +3,10 @@ module.exports = class DbContext {
     this.Model = model;
   }
 
-  async all() {
-    return this.Model.find();
+  async all(school) {
+    return school
+      ? this.Model.find({ school, deleted: { $in: [false, null] } })
+      : this.Model.find({ deleted: { $in: [false, null] } });
   }
 
   async find(selection, projection, options) {
