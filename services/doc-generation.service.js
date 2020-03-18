@@ -102,7 +102,7 @@ module.exports = {
   generateMergedDocument: async dataArray => {
     if (dataArray.length > 1) {
       await asyncForEach(dataArray, async (data, index) => {
-        const templateName = `bulletin-${data.examinationTypes.length}-notes.docx`;
+        const templateName = `bulletin-${data.examinationsTypes.length}-notes.docx`;
         const outputFile = `${path.resolve()}/reports/document-${index}.docx`;
 
         await generateDocument(templateName, data, outputFile);
@@ -110,7 +110,7 @@ module.exports = {
 
       return mergeDocuments(dataArray);
     }
-    const templateName = `bulletin-${dataArray[0].examinationTypes.length}-notes`;
+    const templateName = `bulletin-${dataArray[0].examinationsTypes.length}-notes`;
 
     return this.generateReport(templateName, dataArray[0]);
   },

@@ -24,7 +24,6 @@ const studentSchema = new Schema({
   lastClass: String,
   lastSchool: String,
   dropOut: { type: Boolean, default: false },
-  classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', autopopulate: true },
 });
 
 studentSchema.pre('save', async function preSave(next) {

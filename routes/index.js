@@ -26,6 +26,8 @@ const studentRouter = require('./studentRoutes');
 const registrationRouter = require('./registrationRoutes');
 const examinationRouter = require('./examinationRoutes');
 const spendingTypesRouter = require('./spending-type.routes');
+const classroomRouter = require('./classroom.routes');
+const bulletinRouter = require('./bulletin.routes');
 // const resourcesRouter = require('./resource.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
@@ -34,7 +36,7 @@ router.use('/auth', authRouter);
 // router.use('/users', auth.required, userRouter);
 // router.use('/collaborations', auth.required, collaborationRouter);
 restify.serve(router, PermissionResource, { name: 'app/resources', prefix: '', version: '' });
-restify.serve(router, Classroom, { name: 'classrooms', prefix: '', version: '' });
+restify.serve(router, Classroom, { name: 'r/classrooms', prefix: '', version: '' });
 restify.serve(router, FeeCategory, { name: 'fees/categories', prefix: '', version: '' });
 restify.serve(router, FeeType, { name: 'fees/types', prefix: '', version: '' });
 restify.serve(router, Payment, { name: 'payments', prefix: '', version: '' });
@@ -53,6 +55,8 @@ router.use('/users', auth.required, usersRouter);
 router.use('/schoolyears', auth.required, schoolYearsRouter);
 router.use('/report/print', auth.optional, printRouter);
 router.use('/spending/types', auth.required, spendingTypesRouter);
+router.use('/classrooms', auth.required, classroomRouter);
+router.use('/bulletins', auth.required, bulletinRouter);
 
 router.use((req, res, next) => {
   next(new NotFound(`The requested route '${req.method} ${req.url}' does not exist.`));
