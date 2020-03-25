@@ -115,8 +115,8 @@ module.exports = {
     return this.generateReport(templateName, dataArray[0]);
   },
 
-  exportExcelReport: (data, header) => {
-    const workSheet = header ? XLSX.utils.json_to_sheet(data, { header }) : XLSX.utils.json_to_sheet(data);
+  exportExcelReport: (data) => {
+    const workSheet = XLSX.utils.json_to_sheet(data);
     const workBook = XLSX.utils.book_new();
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'Export');

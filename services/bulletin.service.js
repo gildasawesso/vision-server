@@ -87,6 +87,7 @@ async function buildSessionNotesTree(school, schoolYear) {
             subjects: {},
             grandTotal: 0.0,
             generalMean: 0.0,
+            realCoef: 0,
           };
         }
 
@@ -100,14 +101,17 @@ async function buildSessionNotesTree(school, schoolYear) {
 
         currentClassroomStudents[mark.student._id].subjects[examination.subject._id].note = currentSubjectStudents[mark.student._id].mean;
         currentClassroomStudents[mark.student._id].subjects[examination.subject._id].coef = examination.subject.coefficient;
+
         currentClassroomStudents[mark.student._id].subjects[examination.subject._id].totalWithCoef = currentSubjectStudents[mark.student._id].mean * examination.subject.coefficient;
         currentClassroomStudents[mark.student._id].subjects[examination.subject._id].totalWithCoef = currentSubjectStudents[mark.student._id].mean * examination.subject.coefficient;
 
         const notes = Object.values(currentClassroomStudents[mark.student._id].subjects);
         const grandTotal = notes.reduce((acc, cur) => acc + cur.totalWithCoef, 0);
-        const generalMean = grandTotal / classroomCoef;
+        const currentStudentCoef = notes.reduce((acc, cur) => acc + cur.coef, 0);
+        const generalMean = grandTotal / currentStudentCoef;
         currentClassroomStudents[mark.student._id].grandTotal = grandTotal;
         currentClassroomStudents[mark.student._id].generalMean = generalMean;
+        currentClassroomStudents[mark.student._id].realCoef = currentStudentCoef;
       }
     });
 
