@@ -23,9 +23,10 @@ function sortMarks(mark1, mark2) {
 
 async function buildSessionNotesTree(school, schoolYear) {
   const notesTree = {};
-  const examinations = await Examinations.find({ schoolYear: schoolYear._id });
+  let examinations = await Examinations.find({ schoolYear: schoolYear._id });
 
   for(const examination of examinations) {
+    if (examination.subject == null) { continue; }
     const examinationSession = getExaminationSession(examination, schoolYear);
     const classroomCoef = examination.classroom.subjects.reduce((acc, cur) => acc + cur.coefficient, 0);
     if (!notesTree[examinationSession.name]) {
@@ -114,8 +115,6 @@ async function buildSessionNotesTree(school, schoolYear) {
         currentClassroomStudents[mark.student._id].realCoef = currentStudentCoef;
       }
     });
-
-
   }
 
   return notesTree;
