@@ -1,5 +1,5 @@
 {
-  "name": "recordio-server",
+  "name": "agora-server",
   "version": "0.0.0",
   "description": "Server for recordio app",
   "main": "index.js",
