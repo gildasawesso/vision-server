@@ -1,11 +1,11 @@
 const express = require('express');
 
 const router = express.Router();
-const feeController = require('../controllers/feeController.js');
+const feeController = require('../controllers/fee.controller');
 
-router.get('/', feeController.list);
-router.get('/:id', feeController.show);
-router.post('/', feeController.create);
+router.get('/', feeController.all);
+router.get('/:id', feeController.one);
+router.post('/', feeController.add);
 router.put('/:id', feeController.update);
 router.delete('/:id', feeController.remove);
 

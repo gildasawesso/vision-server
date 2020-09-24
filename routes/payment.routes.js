@@ -5,6 +5,7 @@ const paymentController = require('../controllers/payment.controller');
 router.get('/', paymentController.get);
 router.get('/student/:id', paymentController.student);
 router.get('/classrooms', paymentController.classrooms);
+router.get('/:id', paymentController.one);
 
 router.patch('/:id', paymentController.update);
 

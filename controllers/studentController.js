@@ -1,5 +1,6 @@
 const { Student, Registration } = require('../models');
 const DbContext = require('../services/db_set');
+const context = require('../services/db_context');
 
 const Students = new DbContext(Student);
 const Registrations = new DbContext(Registration);
@@ -13,6 +14,11 @@ module.exports = {
     student = await Students.one(student._id);
 
     await res.json(student);
+  },
+
+  one: async (req, res) => {
+    const student = await context.students.one(req.params.id, 'firstname lastname gender matricule');
+    res.json(student);
   },
 
   get: async (req, res) => {

@@ -5,8 +5,9 @@ const { decodeToken } = require('../utils/jwt');
 const context = require('../services/db_context');
 
 module.exports = {
-  isAdminExist: async(req, res) => {
+  isAdminExist: async (req, res) => {
     const number = context.users.model.count();
+
     number > 0 ? res.json(true) : res.json(false);
   },
 

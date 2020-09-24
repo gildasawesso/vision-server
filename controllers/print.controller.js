@@ -5,9 +5,14 @@ module.exports = {
     const { templateName } = req.params;
     const data = req.body;
 
-    const file = await generateReport(templateName, data);
+    try {
+      const file = await generateReport(templateName, data);
 
-    await res.sendFile(file);
+      await res.sendFile(file);
+    } catch (e) {
+      console.error(e);
+      res.status(400).json(e);
+    }
   },
 
   multiple: async (req, res) => {

@@ -5,23 +5,26 @@ const { userSchool } = require('../services/users.service');
 
 module.exports = {
   get: async (req, res) => {
-    const payments = await context.payments.find({school: req.school, schoolYear: req.schoolYear});
+    const payments = await context.payments.find({ school: req.school, schoolYear: req.schoolYear });
+
+    return res.json(payments);
+  },
+
+  one: async (req, res) => {
+    const payments = await context.payments.one(req.params.id);
 
     return res.json(payments);
   },
 
   student: async (req, res) => {
-    const { id } = req.params;
-    const { _id } = req.auth;
-    const payments = await context.payments.find({ student: id, school: await userSchool(_id) });
-
+    const payments = await context.payments.find({ student: req.params.id });
     return res.json(payments);
   },
 
   classrooms: async (req, res) => {
-    const schoolYear = req.schoolYear;
-    const school = req.school;
-    const classrooms = await context.classrooms.find({school});
+    const { schoolYear } = req;
+    const { school } = req;
+    const classrooms = await context.classrooms.find({ school });
     const classroomPayments = await Promise.all(
       classrooms.map(async classroom => {
         const registrations = await context.registrations.find({ classroom, schoolYear });
@@ -46,17 +49,14 @@ module.exports = {
     });
   },
 
-  update: async (req, res) => {
-
-  },
+  update: async (req, res) => {},
 
   add: async (req, res) => {
     const payload = req.body;
     const payment = await context.payments.add(payload);
+
     res.json(payment);
   },
 
-  delete: async (req, res) => {
-
-  }
+  delete: async (req, res) => {},
 };

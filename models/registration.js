@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const reductionSchema = new Schema({
-  fee: { type: Schema.Types.ObjectId, ref: 'FeeType', autopopulate: true },
+  fee: { type: Schema.Types.ObjectId, ref: 'FeeType' },
   reductionType: String,
   reduction: Number,
 });

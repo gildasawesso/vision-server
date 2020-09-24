@@ -13,7 +13,6 @@ const { host, port, env } = require('./config');
 const logger = require('./config/winston');
 const router = require('./routes');
 const { connectToDatabase } = require('./services/mongoose');
-
 const schoolMiddleware = require('./middlewares/school.middleware');
 
 const {

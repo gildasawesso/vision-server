@@ -1,12 +1,4 @@
-const {
-  Payment,
-  Student,
-  Classroom,
-  SchoolYear,
-  Registration,
-  User,
-  FeeType
-} = require('../models');
+const { Payment, Student, Classroom, SchoolYear, Registration, User, FeeType } = require('../models');
 const DbSet = require('./db_set');
 
 module.exports = {

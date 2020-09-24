@@ -16,8 +16,12 @@ module.exports = class DbSet {
     return this.Model.find(selection, projection, options).lean();
   }
 
-  one(id) {
-    return this.Model.findById(id);
+  findOne(selection, projection, options) {
+    return this.Model.findOne(selection, projection, options).lean();
+  }
+
+  one(id, projection) {
+    return this.Model.findById(id, projection).lean();
   }
 
   async add(data) {

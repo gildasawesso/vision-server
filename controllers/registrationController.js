@@ -35,6 +35,17 @@ module.exports = {
     return res.json(registrations);
   },
 
+  one: async (req, res) => {
+    const registrations = await context.registrations.one(req.params.id);
+
+    return res.json(registrations);
+  },
+
+  reductions: async (req, res) => {
+    const registration = await context.registrations.findOne({ student: req.params.id });
+    res.json(registration.reductions);
+  },
+
   delete: async (req, res) => {
     const registration = await Registrations.delete(req.params.id);
 

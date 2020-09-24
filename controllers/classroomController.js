@@ -9,11 +9,18 @@ const SchoolYears = new DbContext(SchoolYear);
 
 module.exports = {
   all: async (req, res) => {
+    const selection = { school: req.school };
+    const classrooms = await context.classrooms
+      .Model.find(selection, 'name code registrationFee schoolFee reregistrationFee');
 
-    const selection = {school: req.school};
-    let classrooms = await context.classrooms.Model.find(selection).select('name code registrationFee schoolFee reregistrationFee').lean();
     return res.json(classrooms);
-    },
+  },
+
+  one: async (req, res) => {
+    const classroom = await context.classrooms.one(req.params.id);
+    return res.json(classroom);
+  },
+
   getAllStudents: async (req, res) => {
     const { schoolYearId } = req.query;
     let currentSchoolYear = await SchoolYears.one(schoolYearId);
