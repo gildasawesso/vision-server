@@ -60,23 +60,33 @@ module.exports = {
     }
 
     if (schoolYears.length === 1) {
-      const registrations = await context.registrations.all(await userSchool(req.auth._id));
+      const registrations = await context.registrations.Model.find({ school: req.school })
+        .populate('classroom', 'name')
+        .populate('student', 'firstname lastname')
+        .lean();
 
       return res.json(registrations);
     }
 
     if (schoolYears.length === 2) {
       const currentYear = schoolYears[0];
-      const registrations = await context.registrations.find({ registrationDate: { $lt: currentYear.startDate } });
+      const registrations = await context.registrations.Model.find({ registrationDate: { $lt: currentYear.startDate }, school: req.school })
+        .populate('classroom', 'name')
+        .populate('student', 'firstname lastname')
+        .lean();
 
       return res.json(registrations);
     }
 
     const lastyear = schoolYears[1];
     const beforeLastYear = schoolYears[2];
-    const registrations = await context.registrations.find({
+    const registrations = await context.registrations.Model.find({
       registrationDate: { $gt: beforeLastYear.endDate, $lt: lastyear.endDate },
-    });
+      school: req.school
+    })
+      .populate('classroom', 'name')
+      .populate('student', 'firstname lastname')
+      .lean();
 
     return res.json(registrations);
   },
