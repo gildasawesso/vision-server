@@ -2,7 +2,7 @@ const { Examination, ExaminationType, SchoolYear, School } = require('../models'
 const { studentsForClassroom, allStudents } = require('../services/classroom.service');
 const { getBulletins } = require('../services/bulletin.service');
 const { getCurrentSchoolYear } = require('../services/school-year.service');
-const DbContext = require('../services/db_context');
+const DbContext = require('../services/db_set');
 
 const SchoolYears = new DbContext(SchoolYear);
 const Schools = new DbContext(School);
@@ -22,7 +22,5 @@ module.exports = {
     await res.json(bulletins);
   },
 
-  allClassroomsBulletin: async (req, res) => {
-
-  },
+  allClassroomsBulletin: async (req, res) => {},
 };

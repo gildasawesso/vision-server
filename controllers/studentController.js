@@ -1,5 +1,5 @@
 const { Student, Registration } = require('../models');
-const DbContext = require('../services/db_context');
+const DbContext = require('../services/db_set');
 
 const Students = new DbContext(Student);
 const Registrations = new DbContext(Registration);

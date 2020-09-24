@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const context = require('./db_context');
 
 module.exports = {
   usersCount: async () => {
@@ -10,9 +11,9 @@ module.exports = {
   },
 
   userSchool: async id => {
-    const user = await module.exports.userInformations(id);
+    const user = await context.users.one(id);
 
-    return User.findById(user.schools[0]._id);
+    return user.schools[0];
   },
 
   updateUser: async (id, user) => {

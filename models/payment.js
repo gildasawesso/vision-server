@@ -15,6 +15,7 @@ const contributionSchema = new Schema({
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom' },
   paymentDate: { type: Date, default: Date.now },
   amount: Number,
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
 contributionSchema.plugin(timestamps);

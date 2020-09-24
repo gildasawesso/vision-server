@@ -1,6 +1,6 @@
 const { SpendingType } = require('../models');
 const { userSchool } = require('../services/users.service');
-const DbContext = require('../services/db_context');
+const DbContext = require('../services/db_set');
 
 const SpendingTypes = new DbContext(SpendingType);
 

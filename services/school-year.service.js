@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const { SchoolYear, User } = require('../models');
-const DbContext = require('../services/db_context');
+const DbContext = require('./db_set');
 
 const SchoolYears = new DbContext(SchoolYear);
 
@@ -10,31 +10,42 @@ module.exports = {
     const schoolYears = await SchoolYears.all();
     const now = moment();
 
-    return schoolYears.find(s => {
+    const schoolyear = schoolYears.find(s => {
       const start = moment(s.startDate);
       const end = moment(s.endDate);
 
       return now.isSameOrAfter(start) && now.isSameOrBefore(end);
     });
+
+    if (schoolyear === undefined) {
+      return schoolYears.find(s => {
+        const end = moment(s.endDate);
+
+        return now.isSame(end, 'year');
+      });
+    }
+
+    return schoolyear;
   },
 
   getCurrentSession: async () => {
     const schoolYears = await SchoolYears.all();
     const now = moment();
 
-    const schoolYear = schoolYears.find(s => {
+    const schoolYear = await module.exports.getCurrentSchoolYear();
+
+    let currentSession = schoolYear.sessions.find(s => {
       const start = moment(s.startDate);
       const end = moment(s.endDate);
 
       return now.isSameOrAfter(start) && now.isSameOrBefore(end);
     });
 
-    return schoolYear.sessions.find(s => {
-      const start = moment(s.startDate);
-      const end = moment(s.endDate);
+    if (currentSession === undefined) {
+      currentSession = schoolYear.sessions[schoolYear.sessions.length - 1];
+    }
 
-      return now.isSameOrAfter(start) && now.isSameOrBefore(end);
-    });
+    return currentSession;
   },
 
   getSchoolYears: () => {
@@ -45,6 +56,10 @@ module.exports = {
     const user = await User.findById(_id);
 
     return SchoolYear.find({ school: user.schools[0] });
+  },
+
+  updateSchoolYear: (id, data) => {
+    return SchoolYear.findByIdAndUpdate({ _id: id }, data);
   },
 
   getSchoolYear: id => {

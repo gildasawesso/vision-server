@@ -14,7 +14,7 @@ const feeSchema = new Schema({
   isSchoolFee: Boolean,
   tranches: [trancheSchema],
   deadline: Date,
-  feeCategory: { type: Schema.Types.ObjectId, ref: 'FeeCategory', autopopulate: true },
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
 feeSchema.plugin(require('mongoose-autopopulate'));

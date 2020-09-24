@@ -1,6 +1,8 @@
 const { readdirSync } = require('fs');
 const { join, basename } = require('path');
 
+const { User } = require('./user');
+
 readdirSync(__dirname)
   .filter(file => file.indexOf('.') !== 0 && file !== basename(__filename) && file.slice(-3) === '.js')
   .forEach(file => {

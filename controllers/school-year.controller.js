@@ -8,8 +8,9 @@ const {
   removeSession,
   getCurrentSession,
   getCurrentSchoolYear,
+  updateSchoolYear,
 } = require('../services/school-year.service');
-const DbContext = require('../services/db_context');
+const DbContext = require('../services/db_set');
 const { SchoolYear } = require('../models');
 
 const SchoolYears = new DbContext(SchoolYear);
@@ -48,8 +49,12 @@ module.exports = {
     return res.json(schoolYear);
   },
 
-  update(req, res) {
+  async update(req, res) {
     const { id } = req.params;
+    const data = req.body;
+    const updatedSchoolYear = await updateSchoolYear(id, data);
+
+    return res.json(updatedSchoolYear);
   },
 
   remove(req, res) {

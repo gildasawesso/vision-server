@@ -1,7 +1,7 @@
 const { Examination, ExaminationType } = require('../models');
 const { getStudents } = require('../services/students.service');
 const { getCurrentSchoolYear } = require('../services/school-year.service');
-const DbContext = require('../services/db_context');
+const DbContext = require('../services/db_set');
 
 const Examinations = new DbContext(Examination);
 const ExaminationTypes = new DbContext(ExaminationType);

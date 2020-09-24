@@ -2,8 +2,14 @@ const { userPermissions } = require('../services/permissions.service');
 const { usersCount, userInformations, updateUser } = require('../services/users.service');
 const { registerUser } = require('../services/auth.service');
 const { decodeToken } = require('../utils/jwt');
+const context = require('../services/db_context');
 
 module.exports = {
+  isAdminExist: async(req, res) => {
+    const number = context.users.model.count();
+    number > 0 ? res.json(true) : res.json(false);
+  },
+
   add: async (req, res) => {
     const data = req.body;
 

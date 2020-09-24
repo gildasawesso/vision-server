@@ -8,7 +8,7 @@ const Classrooms = restifyMongoose(Classroom);
 
 router.get('/students', classroomController.getAllStudents);
 router.get('/:classroomId/students', classroomController.getStudents);
-router.get('/', Classrooms.query());
+router.get('/', classroomController.all);
 router.get('/:id', Classrooms.detail());
 
 router.post('/', Classrooms.insert());

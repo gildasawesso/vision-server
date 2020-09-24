@@ -5,7 +5,7 @@ const logger = require('../config/winston');
 const { db } = require('../config');
 const { Permission } = require('../models');
 const { permissions } = require('../seeders/permissions');
-const DbContext = require('../services/db_context');
+const DbContext = require('./db_set');
 
 const Permissions = new DbContext(Permission);
 

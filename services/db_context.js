@@ -1,31 +1,20 @@
-module.exports = class DbContext {
-  constructor(model) {
-    this.Model = model;
-  }
+const {
+  Payment,
+  Student,
+  Classroom,
+  SchoolYear,
+  Registration,
+  User,
+  FeeType
+} = require('../models');
+const DbSet = require('./db_set');
 
-  async all(school) {
-    return school
-      ? this.Model.find({ school, deleted: { $in: [false, null] } })
-      : this.Model.find({ deleted: { $in: [false, null] } });
-  }
-
-  async find(selection, projection, options) {
-    return this.Model.find(selection, projection, options);
-  }
-
-  one(id) {
-    return this.Model.findById(id);
-  }
-
-  async add(data) {
-    return this.Model.create(data);
-  }
-
-  async update(id, data) {
-    return this.Model.findOneAndUpdate({ _id: id }, data, { new: true });
-  }
-
-  async delete(id) {
-    return this.Model.findByIdAndDelete(id);
-  }
+module.exports = {
+  payments: new DbSet(Payment),
+  students: new DbSet(Student),
+  classrooms: new DbSet(Classroom),
+  schoolYears: new DbSet(SchoolYear),
+  registrations: new DbSet(Registration),
+  users: new DbSet(User),
+  fees: new DbSet(FeeType),
 };

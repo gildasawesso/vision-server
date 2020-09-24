@@ -10,9 +10,10 @@ const userSchema = new Schema({
   job: String,
   password: String,
   disabled: Boolean,
-  schools: [{ type: Schema.Types.ObjectId, ref: 'School', autopopulate: true }],
-  roles: [{ type: Schema.Types.ObjectId, ref: 'Role', autopopulate: true }],
+  schools: [{ type: Schema.Types.ObjectId, ref: 'School' }],
+  roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }],
   isAdmin: Boolean,
+  createdAt: { type: Date, default: Date.now },
 });
 
 userSchema.plugin(require('mongoose-autopopulate'));

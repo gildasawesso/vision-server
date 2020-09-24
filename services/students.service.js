@@ -1,5 +1,5 @@
 const { Registration } = require('../models');
-const DbContext = require('../services/db_context');
+const DbContext = require('./db_set');
 
 const Admissions = new DbContext(Registration);
 
@@ -8,7 +8,5 @@ module.exports = {
     return Admissions.find({ classroom: classroomId, schoolYear: schoolyearId });
   },
 
-  removeStudent: async (studentId) => {
-
-  }
+  removeStudent: async studentId => {},
 };
