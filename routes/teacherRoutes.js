@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var teacherController = require('../controllers/teacherController.js');
+var teacherController = require('../controllers/teacher.controller.js');
 
 /*
  * GET

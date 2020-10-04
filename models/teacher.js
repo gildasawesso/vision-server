@@ -11,6 +11,7 @@ const teacherSchema = new Schema({
   qualifications: String,
   hireDate: { type: Date, default: Date.now },
   fireDate: Date,
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
 teacherSchema.plugin(require('mongoose-timestamp'));

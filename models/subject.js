@@ -8,6 +8,7 @@ const subjectSchema = new Schema({
   teachers: [{ type: Schema.Types.ObjectId, ref: 'Teacher' }],
   markBy: Number,
   coefficient: Number,
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
 subjectSchema.plugin(require('mongoose-timestamp'));

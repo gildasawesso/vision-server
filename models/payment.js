@@ -18,6 +18,23 @@ const contributionSchema = new Schema({
   school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
 
+contributionSchema.virtual('_classroom', {
+  ref: 'Classroom',
+  localField: 'classroom',
+  foreignField: '_id',
+  justOne: true
+});
+
+contributionSchema.virtual('_student', {
+  ref: 'Student',
+  localField: 'student',
+  foreignField: '_id',
+  justOne: true
+});
+
+contributionSchema.set('toObject', { virtuals: true });
+contributionSchema.set('toJSON', { virtuals: true });
+
 contributionSchema.plugin(timestamps);
 
 contributionSchema.pre('save', async function preSave(next) {

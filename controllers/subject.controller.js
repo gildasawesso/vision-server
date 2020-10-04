@@ -2,7 +2,7 @@ const context = require('../services/db_context');
 
 module.exports = {
   all: async (req, res) => {
-    const permissions = await context.permissions.find();
-    res.json(permissions);
+    const subjects = await context.subjects.find({school: req.school})
+    res.json(subjects);
   },
 };

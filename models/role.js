@@ -4,9 +4,8 @@ const { Schema } = mongoose;
 
 const roleSchema = new Schema({
   name: String,
-  permissions: [{ type: Schema.Types.ObjectId, ref: 'Permission', autopopulate: true }],
+  permissions: [{ type: Schema.Types.ObjectId, ref: 'Permission' }],
+  school: { type: Schema.Types.ObjectId, ref: 'School' },
 });
-
-roleSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('Role', roleSchema);

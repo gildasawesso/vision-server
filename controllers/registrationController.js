@@ -1,9 +1,7 @@
 const { Registration } = require('../models');
 const DbContext = require('../services/db_set');
 const context = require('../services/db_context');
-const { getCurrentSchoolYear } = require('../services/school-year.service');
-const { userSchool } = require('../services/users.service');
-
+const { lastYearRegistrations } = require('../services/students.service');
 const Registrations = new DbContext(Registration);
 
 module.exports = {
@@ -28,9 +26,12 @@ module.exports = {
   },
 
   all: async (req, res) => {
-    const school = await userSchool(req.auth._id);
-    const { schoolyear } = req.query;
-    const registrations = await context.registrations.find({ school, schoolYear: schoolyear });
+    const registrations = await context.registrations.Model
+      .find({ school: req.school, schoolYear: req.schoolYear })
+      .lean()
+      .populate('classroom', 'name')
+      .populate('schoolYear', 'startDate endDate')
+      .populate('student', 'firstname lastname');
 
     return res.json(registrations);
   },
@@ -41,9 +42,39 @@ module.exports = {
     return res.json(registrations);
   },
 
+  student: async (req, res) => {
+    const registration = await context.registrations.findOne({schoolYear: req.schoolYear, student: req.params.id})
+      .lean()
+      .populate('classroom', 'name')
+      .populate('schoolYear', 'startDate endDate')
+      .populate('student', 'firstname lastname');
+    return res.json(registration);
+  },
+
   reductions: async (req, res) => {
     const registration = await context.registrations.findOne({ student: req.params.id });
     res.json(registration.reductions);
+  },
+
+  genders: async (req, res) => {
+    const registration = await context.registrations.Model.find({ schoolYear: req.schoolYear, school: req.school })
+      .populate('student', 'gender')
+      .lean();
+
+    const students = registration.map(r => r.student);
+    let girls = 0;
+    let boys = 0;
+    students.forEach(student => {
+      if (student.gender === 'M') {
+        boys += 1;
+      } else if (student.gender === 'F') {
+        girls += 1;
+      }
+    });
+    res.json({
+      girls,
+      boys
+    });
   },
 
   delete: async (req, res) => {
@@ -53,61 +84,7 @@ module.exports = {
   },
 
   lastYear: async (req, res) => {
-    const schoolYears = await context.schoolYears.find({}, {}, { sort: { _id: -1 } });
-
-    if (schoolYears.length === 0) {
-      return res.json([]);
-    }
-
-    if (schoolYears.length === 1) {
-      const registrations = await context.registrations.Model.find({ school: req.school })
-        .populate('classroom', 'name')
-        .populate('student', 'firstname lastname')
-        .lean();
-
-      return res.json(registrations);
-    }
-
-    if (schoolYears.length === 2) {
-      const currentYear = schoolYears[0];
-      const registrations = await context.registrations.Model.find({ registrationDate: { $lt: currentYear.startDate }, school: req.school })
-        .populate('classroom', 'name')
-        .populate('student', 'firstname lastname')
-        .lean();
-
-      return res.json(registrations);
-    }
-
-    const lastyear = schoolYears[1];
-    const beforeLastYear = schoolYears[2];
-    const registrations = await context.registrations.Model.find({
-      registrationDate: { $gt: beforeLastYear.endDate, $lt: lastyear.endDate },
-      school: req.school
-    })
-      .populate('classroom', 'name')
-      .populate('student', 'firstname lastname')
-      .lean();
-
-    return res.json(registrations);
-  },
+    const registrations = await lastYearRegistrations(req.school);
+    res.json(registrations);
+  }
 };
-
-async function currentYearRegistrations(school) {
-  const schoolYears = await context.schoolYears.find({}, {}, { sort: { _id: -1 } });
-
-  if (schoolYears.length === 0) {
-    return [];
-  }
-
-  if (schoolYears.length === 1) {
-    return context.registrations.all(school);
-  }
-
-  if (schoolYears.length >= 2) {
-    const lastyear = schoolYears[1];
-
-    return context.registrations.find({ registrationDate: { $gt: lastyear.endDate } });
-  }
-
-  return [];
-}

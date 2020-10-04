@@ -24,6 +24,10 @@ module.exports = class DbSet {
     return this.Model.findById(id, projection).lean();
   }
 
+  count(filter) {
+    return this.Model.countDocuments(filter);
+  }
+
   async add(data) {
     return this.Model.create(data);
   }
