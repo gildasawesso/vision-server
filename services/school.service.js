@@ -1,7 +1,8 @@
 const { School } = require('../models');
+const context = require('./db_context');
 
 async function getSchools() {
-  return School.find();
+  return context.schools.all();
 }
 
 async function getSchool(id) {

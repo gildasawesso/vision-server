@@ -22,6 +22,7 @@ const schoolRouter = require('./school.routes');
 const permissionRouter = require('./permission.routes');
 const transactionRouter = require('./transaction.routes');
 const transactionTypesRouter = require('./transaction-types.routes');
+const examinationTypesRouter = require('./examination-type.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
 router.use('/auth', authRouter);
@@ -32,6 +33,7 @@ router.use('/permissions', auth.required, permissionRouter);
 router.use('/subjects', auth.required, subjectRouter);
 router.use('/roles', auth.required, roleRouter);
 router.use('/teachers', auth.required, teacherRouter);
+router.use('/examinations/types', auth.required, examinationTypesRouter);
 router.use('/examinations', auth.required, examinationRouter);
 router.use('/registrations', auth.required, registrationRouter);
 router.use('/students', auth.required, studentRouter);

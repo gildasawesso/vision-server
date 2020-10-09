@@ -51,7 +51,10 @@ module.exports = {
   },
 
   pastAndNewStudents: async (req, res) => {
-    const currentYearRegistrations = await context.registrations.find({ school: req.school, schoolYear: req.schoolYear });
+    const currentYearRegistrations = await context.registrations.find({
+      school: req.school,
+      schoolYear: req.schoolYear,
+    });
 
     let pastStudents = 0;
     let newStudents = 0;
@@ -67,25 +70,55 @@ module.exports = {
 
   schoolPayments: async (req, res) => {
     const payments = await context.payments.find({ school: req.school, schoolYear: req.schoolYear });
+    const classrooms = await context.classrooms.find({ school: req.school });
     let totalPayments = 0;
     let registrationPayments = 0;
     let schoolFeesPayments = 0;
     let otherPayments = 0;
 
-    for (const payment of payments) {
-      const classroom = await context.classrooms.one(payment.classroom);
-      totalPayments += payment.amount;
-      payment.paymentLines.forEach(line => {
-        if (line.fee === classroom.registrationFee.toString() || line.fee === classroom.reregistrationFee.toString()) {
-          registrationPayments += line.amount;
-        } else if (line.fee === classroom.schoolFee.toString()) {
-          schoolFeesPayments += line.amount;
-        } else {
-          otherPayments += line.amount;
-        }
+    for (const classroom of classrooms) {
+      const registrations = await context.registrations.find({
+        school: req.school,
+        schoolYear: req.schoolYear,
+        classroom,
       });
+
+      for (const registration of registrations) {
+        const studentPayments = await context.payments.find({
+          student: registration.student,
+          schoolYear: req.schoolYear,
+          classroom,
+        });
+
+        for (const payment of studentPayments) {
+          payment.paymentLines.forEach(line => {
+            totalPayments += line.amount;
+            if (line.feeId.toString() === classroom.registrationFee.toString() || line.feeId.toString() === classroom.reregistrationFee.toString()) {
+              registrationPayments += line.amount;
+            } else if (line.feeId.toString() === classroom.schoolFee.toString()) {
+              schoolFeesPayments += line.amount;
+            } else {
+              otherPayments += line.amount;
+            }
+          });
+        }
+      }
     }
 
-    res.json([totalPayments, registrationPayments, schoolFeesPayments, otherPayments]);
-  }
+    // for (const payment of payments) {
+    //   const classroom = await context.classrooms.one(payment.classroom);
+    //   totalPayments += payment.amount;
+    //   payment.paymentLines.forEach(line => {
+    //     if (line.feeId.toString() === classroom.registrationFee.toString() || line.feeId.toString() === classroom.reregistrationFee.toString()) {
+    //       registrationPayments += line.amount;
+    //     } else if (line.feeId.toString() === classroom.schoolFee.toString()) {
+    //       schoolFeesPayments += line.amount;
+    //     } else {
+    //       otherPayments += line.amount;
+    //     }
+    //   });
+    // }
+
+    res.json([totalPayments, schoolFeesPayments, registrationPayments, otherPayments]);
+  },
 };

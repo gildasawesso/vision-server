@@ -8,8 +8,8 @@ module.exports = class DbSet {
 
   async all(school) {
     return school
-      ? this.Model.find({ school, deleted: { $in: [false, null] } })
-      : this.Model.find({ deleted: { $in: [false, null] } });
+      ? this.Model.find({ school, deleted: { $in: [false, null] } }).lean()
+      : this.Model.find({ deleted: { $in: [false, null] } }).lean();
   }
 
   find(selection, projection, options) {

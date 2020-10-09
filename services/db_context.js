@@ -11,7 +11,10 @@ const {
   Teacher,
   Permission,
   Transaction,
-  TransactionType
+  TransactionType,
+  School,
+  Examination,
+  ExaminationType
 } = require('../models');
 const DbSet = require('./db_set');
 
@@ -28,5 +31,8 @@ module.exports = {
   teachers: new DbSet(Teacher),
   permissions: new DbSet(Permission),
   transactions: new DbSet(Transaction),
-  transactionTypes: new DbSet(TransactionType)
+  transactionTypes: new DbSet(TransactionType),
+  schools: new DbSet(School),
+  examinations: new DbSet(Examination),
+  examinationTypes: new DbSet(ExaminationType)
 };

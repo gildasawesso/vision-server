@@ -6,8 +6,7 @@ const examinationTypeSchema = new Schema({
   name: String,
   group: Number,
   displayOrder: Number,
+  schoolId: { type: Schema.Types.ObjectId, ref: 'School' },
 });
-
-examinationTypeSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('ExaminationType', examinationTypeSchema);

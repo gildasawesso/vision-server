@@ -1,11 +1,11 @@
+const context = require('../services/db_context');
 const { School } = require('../models');
 const { getSchools, getSchool, addSchool, updateSchool, removeSchool } = require('../services/school.service');
 
 module.exports = {
   async list(req, res) {
-    const schools = await getSchools();
-
-    await res.json(schools);
+    const school = await context.schools.one(req.school)
+    res.json(school);
   },
 
   async show(req, res) {

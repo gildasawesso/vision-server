@@ -16,6 +16,31 @@ module.exports = {
     return res.json(fee);
   },
 
+  otherFees: async (req, res) => {
+    const fees = await context.fees.find({school: req.school});
+    const classrooms = await context.classrooms.all(req.school);
+
+    const feesUsed = [];
+    let otherFees;
+    classrooms.forEach(classroom => {
+      if (classroom.registrationFee != null) {
+        feesUsed.push(classroom.registrationFee.toString());
+      }
+      if (classroom.reregistrationFee != null) {
+        feesUsed.push(classroom.reregistrationFee.toString());
+      }
+      if (classroom.schoolFee != null) {
+        feesUsed.push(classroom.schoolFee.toString());
+      }
+    });
+
+    otherFees = fees.filter(fee => {
+      return fee.tranches.length === 0 && !feesUsed.includes(fee._id.toString());
+    });
+
+    return res.json(otherFees);
+  },
+
   add: async (req, res) => {
     const fee = await context.fees.add(req.body);
 

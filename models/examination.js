@@ -7,16 +7,43 @@ const markSchema = new Schema({
   mark: Number,
 });
 
-markSchema.plugin(require('mongoose-autopopulate'));
-
 const examinationSchema = new Schema({
-  classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', autopopulate: true },
-  schoolYear: { type: Schema.Types.ObjectId, ref: 'SchoolYear', autopopulate: true },
-  subject: { type: Schema.Types.ObjectId, ref: 'Subject', autopopulate: true },
-  type: { type: Schema.Types.ObjectId, ref: 'ExaminationType', autopopulate: true },
+  classroomId: { type: Schema.Types.ObjectId, ref: 'Classroom', autopopulate: true },
+  schoolYearId: { type: Schema.Types.ObjectId, ref: 'SchoolYear', autopopulate: true },
+  subjectId: { type: Schema.Types.ObjectId, ref: 'Subject', autopopulate: true },
+  typeId: { type: Schema.Types.ObjectId, ref: 'ExaminationType', autopopulate: true },
   marks: [markSchema],
+  schoolId: { type: Schema.Types.ObjectId, ref: 'School' },
   examinationDate: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
+});
+
+examinationSchema.virtual('classroom', {
+  ref: 'Classroom',
+  localField: 'classroomId',
+  foreignField: '_id',
+  justOne: true
+});
+
+examinationSchema.virtual('schoolYear', {
+  ref: 'SchoolYear',
+  localField: 'schoolYearId',
+  foreignField: '_id',
+  justOne: true
+});
+
+examinationSchema.virtual('subject', {
+  ref: 'Subject',
+  localField: 'subjectId',
+  foreignField: '_id',
+  justOne: true
+});
+
+examinationSchema.virtual('type', {
+  ref: 'ExaminationType',
+  localField: 'typeId',
+  foreignField: '_id',
+  justOne: true
 });
 
 examinationSchema.plugin(require('mongoose-autopopulate'));

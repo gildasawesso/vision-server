@@ -53,7 +53,7 @@ module.exports = {
 
   reductions: async (req, res) => {
     const registration = await context.registrations.findOne({ student: req.params.id });
-    res.json(registration.reductions);
+    res.json(registration.reductions ?? []);
   },
 
   genders: async (req, res) => {

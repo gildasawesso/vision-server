@@ -2,6 +2,7 @@ const { Examination, ExaminationType } = require('../models');
 const { getStudents } = require('../services/students.service');
 const { getCurrentSchoolYear } = require('../services/school-year.service');
 const DbContext = require('../services/db_set');
+const context = require('../services/db_context');
 
 const Examinations = new DbContext(Examination);
 const ExaminationTypes = new DbContext(ExaminationType);
@@ -12,12 +13,48 @@ function isRegistrationInMarks(marks, registration) {
 
 module.exports = {
   get: async (req, res) => {
-    const examinations = await Examinations.find(null, null, { sort: { _id: -1 } });
-    const schoolYear = await getCurrentSchoolYear();
+    const examinations = await context.examinations.Model.find({
+      schoolId: req.school,
+      schoolYearId: req.schoolYear,
+    })
+      .lean()
+      .populate('subject', 'code')
+      .populate('classroom', 'name')
+      .populate('marks.student', '_id mark')
+      .populate('type', 'name')
+      .sort({ _id: -1 });
 
-    examinations.filter(e => e.schoolYear === schoolYear._id);
+    return res.json(examinations);
 
-    await res.json(examinations);
+    // const examinations = await context.examinations.Model.find({
+    //   schoolId: req.school,
+    //   schoolYearId: req.schoolYear,
+    // }, '-marks')
+    //   .lean()
+    //   .populate('subject', 'code')
+    //   .populate('classroom', 'name')
+    //   .populate('type', 'name')
+    //   .sort({ _id: -1 });
+    //
+    // return res.json(examinations);
+  },
+
+  one: async (req, res) => {
+    const examination = await context.examinations.Model.findById(req.params.id)
+      .lean()
+      .populate('subject', 'code markBy')
+      .populate('classroom', 'name')
+      .populate('type', 'name');
+
+    examination.marks = await Promise.all(examination.marks.map(async mark => {
+      const student = await context.students.one(mark.student);
+      return {
+        ...mark,
+        student,
+      };
+    }));
+
+    return res.json(examination);
   },
 
   add: async (req, res) => {

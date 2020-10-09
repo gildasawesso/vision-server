@@ -3,6 +3,7 @@ const moment = require('moment');
 const { User, Examination, Classroom, SchoolSession, SchoolYear } = require('../models');
 const { studentsForClassroom } = require('../services/classroom.service');
 const DbContext = require('./db_set');
+const context = require('./db_context');
 
 const Examinations = new DbContext(Examination);
 const Classrooms = new DbContext(Classroom);
@@ -23,16 +24,22 @@ function sortMarks(mark1, mark2) {
   return mark2.mark - mark1.mark;
 }
 
-async function buildSessionNotesTree(school, schoolYear) {
+async function buildSessionNotesTree(schoolId, schoolYear) {
   const notesTree = {};
-  const examinations = await Examinations.find({ schoolYear: schoolYear._id });
+  const examinations = await context.examinations.Model
+    .find({ schoolId, schoolYearId: schoolYear._id })
+    .populate('subject')
+    .populate('classroom')
+    .populate('marks.student', '_id mark')
+    .populate('type');
 
   for (const examination of examinations) {
     if (examination.subject == null) {
       continue;
     }
     const examinationSession = getExaminationSession(examination, schoolYear);
-    const classroomCoef = examination.classroom.subjects.reduce((acc, cur) => acc + cur.coefficient, 0);
+    const classroom = await context.classrooms.Model.findById(examination.classroom._id).populate('subjects');
+    const classroomCoef = classroom.subjects.reduce((acc, cur) => acc + cur.coefficient, 0);
 
     if (!notesTree[examinationSession.name]) {
       notesTree[examinationSession.name] = {};
@@ -138,9 +145,9 @@ async function buildSessionNotesTree(school, schoolYear) {
 }
 
 module.exports = {
-  getBulletins: async (school, schoolYearId) => {
+  getBulletins: async (schoolId, schoolYearId) => {
     const schoolYear = await SchoolYears.one(schoolYearId);
 
-    return buildSessionNotesTree(school, schoolYear);
+    return buildSessionNotesTree(schoolId, schoolYear);
   },
 };
