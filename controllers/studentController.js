@@ -22,7 +22,11 @@ module.exports = {
   },
 
   get: async (req, res) => {
-    const students = await Students.all();
+    const registrations = await context.registrations.Model
+      .find({school: req.school, schoolYear: req.schoolYear}, 'student classroom')
+      .lean()
+      .populate('student', 'firstname lastname gender matricule');
+    const students = registrations.map(registration => ({classroomId: registration.classroom, ...registration.student}));
 
     await res.json(students);
   },

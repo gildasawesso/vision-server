@@ -47,7 +47,7 @@ module.exports = {
       .lean()
       .populate('classroom', 'name')
       .populate('schoolYear', 'startDate endDate')
-      .populate('student', 'firstname lastname');
+      .populate('student');
     return res.json(registration);
   },
 

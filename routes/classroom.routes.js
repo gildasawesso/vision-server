@@ -11,8 +11,10 @@ router.get('/:classroomId/students', classroomController.getStudents);
 router.get('/', classroomController.all);
 router.get('/:id', classroomController.one);
 
-router.post('/', Classrooms.insert());
-router.put('/:id', Classrooms.update());
+router.post('/', classroomController.add);
+
+router.patch('/:id', classroomController.update);
+
 router.delete('/:id', Classrooms.remove());
 
 module.exports = router;
