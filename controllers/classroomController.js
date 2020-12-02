@@ -25,6 +25,7 @@ module.exports = {
       .findById(req.params.id)
       .lean()
       .populate('_registrationFee')
+      .populate('subjects')
       .populate('_reRegistrationFee')
       .populate('_schoolFee')
       .populate('_teacher')

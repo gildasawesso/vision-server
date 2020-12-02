@@ -11,7 +11,7 @@ module.exports = {
       await res.sendFile(file);
     } catch (e) {
       console.error(e);
-      res.status(400).json(e);
+      res.status(400).json(JSON.stringify(e));
     }
   },
 

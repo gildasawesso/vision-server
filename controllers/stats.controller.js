@@ -3,11 +3,11 @@ const userService = require('../services/students.service');
 
 module.exports = {
   genders: async (req, res) => {
-    const registration = await context.registrations.Model.find({ schoolYear: req.schoolYear, school: req.school })
-      .populate('student', 'gender')
-      .lean();
+    const registrations = await context.registrations.Model.find({ schoolYear: req.schoolYear, school: req.school })
+      .lean()
+      .populate('student', 'gender');
 
-    const students = registration.map(r => r.student);
+    const students = registrations.map(r => r.student);
     let girls = 0;
     let boys = 0;
     students.forEach(student => {
