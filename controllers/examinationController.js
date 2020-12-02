@@ -40,11 +40,30 @@ module.exports = {
   },
 
   one: async (req, res) => {
-    const examination = await context.examinations.Model.findById(req.params.id)
+    let examination = await context.examinations.Model.findById(req.params.id)
       .lean()
       .populate('subject', 'code markBy')
       .populate('classroom', 'name')
       .populate('type', 'name');
+
+    const registrations = await getStudents(examination.classroomId, examination.schoolYearId);
+    const registrationsWithoutMarks = registrations.filter(registration => {
+      return examination.marks.find(mark => mark.student.toString() === registration.student.toString()) === undefined;
+    });
+    if (registrationsWithoutMarks.length > 0) {
+      registrationsWithoutMarks.forEach(registration => {
+        examination.marks.push({
+          student: registration.student,
+          mark: null
+        });
+      });
+      await context.examinations.update(examination._id, examination);
+      examination = await context.examinations.Model.findById(req.params.id)
+        .lean()
+        .populate('subject', 'code markBy')
+        .populate('classroom', 'name')
+        .populate('type', 'name');
+    }
 
     examination.marks = await Promise.all(examination.marks.map(async mark => {
       const student = await context.students.one(mark.student);
@@ -59,10 +78,9 @@ module.exports = {
 
   add: async (req, res) => {
     const data = req.body;
-
-    const { _id, classroom, schoolYear } = await Examinations.add(data);
-    const registrations = await getStudents(classroom, schoolYear);
-    const examination = await Examinations.one(_id);
+    const { _id, classroomId, schoolYearId } = await context.examinations.add(data);
+    const registrations = await getStudents(classroomId, schoolYearId);
+    const examination = await context.examinations.Model.findById(_id);
 
     registrations.forEach(registration => {
       examination.marks.push({
@@ -96,7 +114,12 @@ module.exports = {
   },
 
   update: async (req, res) => {
-    const examination = await Examinations.update(req.params.id, req.body);
+    await context.examinations.update(req.params.id, req.body);
+    const examination = await context.examinations.Model.findById(req.params.id)
+      .lean()
+      .populate('subject', 'code markBy')
+      .populate('classroom', 'name')
+      .populate('type', 'name');
 
     await res.json(examination);
   },
