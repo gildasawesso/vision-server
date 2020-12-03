@@ -11,6 +11,15 @@ module.exports = {
     number > 0 ? res.json(true) : res.json(false);
   },
 
+  all: async (req, res) => {
+    const users = await context.users.Model
+      .find({ schools: req.school }, '-password')
+      .lean()
+      .populate('roles', 'name');
+
+    return res.json(users);
+  },
+
   add: async (req, res) => {
     const data = req.body;
 
@@ -45,11 +54,10 @@ module.exports = {
   },
 
   update: async (req, res) => {
-    const { _id } = req.auth;
-    const data = req.body;
-
-    const user = await updateUser(_id, data);
-
-    return res.json(user);
+    await context.users.update(req.params.id, req.body);
+    const user = await context.users.Model.findById(req.params.id, '-password')
+      .lean()
+      .populate('roles', 'name');
+    res.json(user);
   },
 };

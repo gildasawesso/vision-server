@@ -80,15 +80,21 @@ module.exports = {
     const data = req.body;
     const { _id, classroomId, schoolYearId } = await context.examinations.add(data);
     const registrations = await getStudents(classroomId, schoolYearId);
-    const examination = await context.examinations.Model.findById(_id);
+    const examinationCreated = await context.examinations.Model.findById(_id);
 
     registrations.forEach(registration => {
-      examination.marks.push({
+      examinationCreated.marks.push({
         student: registration.student,
         mark: null,
       });
     });
-    await examination.save();
+    await examinationCreated.save();
+
+    const examination = await context.examinations.one(examinationCreated._id.toString())
+      .lean()
+      .populate('subject', 'code markBy')
+      .populate('classroom', 'name')
+      .populate('type', 'name');
 
     await res.json(examination);
   },
