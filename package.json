@@ -33,7 +33,7 @@
   "dependencies": {
     "@kazaar/express-error-handler": "^2.2.10",
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "celebrate": "^10.0.1",
     "chalk": "^2.4.2",
