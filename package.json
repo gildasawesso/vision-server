@@ -43,7 +43,7 @@
     "dotenv": "^8.0.0",
     "easy-pdf-merge": "^0.2.2",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.1",
+    "express-jwt": "^6.0.0",
     "express-promise-router": "^3.0.3",
     "express-restify-mongoose": "^5.0.0",
     "helmet": "^3.15.0",
