@@ -67,37 +67,39 @@ async function mergeDocuments(dataArray) {
   });
 }
 
+async function generateReport(documentName, data) {
+  const content = await fs.readFile(`${path.resolve()}/templates/${documentName}.docx`, 'binary');
+  const zip = new PizZip(content);
+  const doc = new Docxtemplater();
+
+  doc.loadZip(zip);
+  doc.setData(data);
+
+  try {
+    doc.render();
+  } catch (error) {
+    const e = {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      properties: error.properties,
+    };
+
+    console.error(JSON.stringify({ error: e }));
+    throw error;
+  }
+
+  const buffer = doc.getZip().generate({ type: 'nodebuffer' });
+
+  const filepath = `${path.resolve()}/reports/output.docx`;
+
+  await fs.writeFile(filepath, buffer);
+
+  return generatePDF(filepath);
+}
+
 module.exports = {
-  generateReport: async (documentName, data) => {
-    const content = await fs.readFile(`${path.resolve()}/templates/${documentName}.docx`, 'binary');
-    const zip = new PizZip(content);
-    const doc = new Docxtemplater();
-
-    doc.loadZip(zip);
-    doc.setData(data);
-
-    try {
-      doc.render();
-    } catch (error) {
-      const e = {
-        message: error.message,
-        name: error.name,
-        stack: error.stack,
-        properties: error.properties,
-      };
-
-      console.error(JSON.stringify({ error: e }));
-      throw error;
-    }
-
-    const buffer = doc.getZip().generate({ type: 'nodebuffer' });
-
-    const filepath = `${path.resolve()}/reports/output.docx`;
-
-    await fs.writeFile(filepath, buffer);
-
-    return generatePDF(filepath);
-  },
+  generateReport: generateReport,
 
   generateMergedDocument: async dataArray => {
     if (dataArray.length > 1) {
@@ -112,7 +114,7 @@ module.exports = {
     }
     const templateName = `bulletin-${dataArray[0].examinationsTypes.length}-notes`;
 
-    return this.generateReport(templateName, dataArray[0]);
+    return generateReport(templateName, dataArray[0]);
   },
 
   exportExcelReport: (data) => {

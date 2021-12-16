@@ -23,6 +23,7 @@ const permissionRouter = require('./permission.routes');
 const transactionRouter = require('./transaction.routes');
 const transactionTypesRouter = require('./transaction-types.routes');
 const examinationTypesRouter = require('./examination-type.routes');
+const testRouter = require('./test.routes');
 
 router.get('/', (req, res) => res.json(Date.now()));
 router.use('/auth', authRouter);
@@ -48,6 +49,7 @@ router.use('/fees', auth.required, feeRouter);
 router.use('/stats', auth.required, statsRouter);
 router.use('/transactions', auth.required, transactionRouter);
 router.use('/transactions/types', auth.required, transactionTypesRouter);
+router.use('/test', testRouter);
 
 router.use((req, res, next) => {
   next(new NotFound(`The requested route '${req.method} ${req.url}' does not exist.`));
