@@ -60,7 +60,7 @@
     "restify-mongoose": "^4.0.0",
     "saslprep": "^1.0.3",
     "sequelize": "^6.1.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "winston": "^3.2.1",
     "xlsx": "^0.15.3"
   },
