@@ -16,9 +16,7 @@
   "repository": "recordio-server",
   "license": "my licence",
   "husky": {
-    "hooks": {
-
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "*.js": [

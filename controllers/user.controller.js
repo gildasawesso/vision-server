@@ -22,6 +22,7 @@ module.exports = {
 
   add: async (req, res) => {
     const data = req.body;
+    data.schools = [req.school];
 
     const payload = await registerUser(data.username, data.password, data.firstname, data.lastname, data.isAdmin);
     const { _id } = decodeToken(payload.accessToken);

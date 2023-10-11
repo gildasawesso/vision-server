@@ -14,7 +14,9 @@ function isPermissionIncluded(permissionsArray, item) {
 }
 
 function connectToDatabase() {
+  console.log(`mongodb://${db.username}:${db.password}@${db.host}/${db.database}`);
   mongoose.connect(`mongodb://${db.username}:${db.password}@${db.host}/${db.database}`, {
+  // mongoose.connect(`mongodb+srv://${db.username}:${db.password}@${db.host}/${db.database}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

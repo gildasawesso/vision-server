@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `${__dirname}/../.env` });
+require('dotenv').config({ path: `${__dirname}/../.env.local` });
 
 const { checkEnvironmentVariables } = require('../utils/env');
 

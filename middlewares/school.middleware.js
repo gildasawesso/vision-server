@@ -1,6 +1,16 @@
 const context = require('../services/db_context');
 
-const pathExluded = ['/auth/signin', '/auth/signup' , '/users/me', '/config/admin/exist', '/config/schoolyear/exist', '/schoolyears/current', '/report/print/registration'];
+const pathExluded = [
+  '/auth/signin',
+  '/auth/signup',
+  '/users/me',
+  '/config/admin/exist',
+  '/config/schoolyear/exist',
+  '/schoolyears/current',
+  '/report/print/registration',
+  '/schools',
+  '/schoolyears'
+];
 
 module.exports = async (req, res, next) => {
   const token = getToken(req);

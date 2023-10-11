@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  agora:
+    image: gawesso/agora:1.0.0
+    restart: always
+    environment:
+      - DB_HOST=mongodb
+      - DB_NAME=agora_prod
+      - DB_USER=agora_api
+      - DB_PASSWORD=lJLiJNql68pdYVH6
+      - JWT_SECRET=agora
+      - JWT_REFRESH_SECRET=agora_refresh
+    depends_on:
+      - mongodb
+    ports:
+      - "3020:3020"
+
+  agora-web:
+    image: gawesso/agora-web:1.0.0
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - agora
+
+  mongodb:
+    image: mongo:4.4.25
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=agora_prod
+    volumes:
+      - mongodb-data:/data/db
+      - .:/opt
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb-data:
