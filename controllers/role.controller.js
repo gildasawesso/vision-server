@@ -12,12 +12,14 @@ module.exports = {
   },
 
   add: async (req, res) => {
-    const role = await context.roles.add(req.body);
+    const payload = { ...req.body, school: req.school };
+    const role = await context.roles.add(payload);
     res.json(role);
   },
 
   update: async (req, res) => {
-    const role = await context.roles.update(req.params.id, req.body);
+    const payload = { ...req.body, school: req.school };
+    const role = await context.roles.update(req.params.id, payload);
     res.json(role);
   },
 

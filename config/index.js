@@ -4,7 +4,7 @@ const { checkEnvironmentVariables } = require('../utils/env');
 
 const envVariables = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'JWT_SECRET'];
 
-checkEnvironmentVariables(envVariables);
+// checkEnvironmentVariables(envVariables);
 
 const env = process.env.NODE_ENV || 'development';
 const isProduction = env === 'production';

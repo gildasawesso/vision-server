@@ -15,6 +15,6 @@ router.post('/', classroomController.add);
 
 router.patch('/:id', classroomController.update);
 
-router.delete('/:id', Classrooms.remove());
+router.delete('/:id', classroomController.delete);
 
 module.exports = router;

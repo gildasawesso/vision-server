@@ -12,12 +12,14 @@ module.exports = {
   },
 
   add: async (req, res) => {
-    const subject = await context.subjects.add(req.body);
+    const payload = { ...req.body, school: req.school };
+    const subject = await context.subjects.add(payload);
     res.json(subject);
   },
 
   update: async (req, res) => {
-    const subject = await context.subjects.update(req.params.id, req.body);
+    const payload = { ...req.body, school: req.school };
+    const subject = await context.subjects.update(req.params.id, payload);
     res.json(subject);
   },
 

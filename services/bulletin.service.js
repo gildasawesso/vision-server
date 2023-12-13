@@ -146,8 +146,13 @@ async function buildSessionNotesTree(schoolId, schoolYear) {
 
 module.exports = {
   getBulletins: async (schoolId, schoolYearId) => {
-    const schoolYear = await SchoolYears.one(schoolYearId);
+    try {
+      const schoolYear = await SchoolYears.one(schoolYearId);
 
-    return buildSessionNotesTree(schoolId, schoolYear);
+      return buildSessionNotesTree(schoolId, schoolYear);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   },
 };

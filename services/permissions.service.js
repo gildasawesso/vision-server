@@ -1,24 +1,11 @@
 const { User } = require('../models');
 
-function permissionsFromRole(role) {
-  return role.permissions.reduce((acc, cur) => {
-    acc.push(cur.name);
-
-    return acc;
-  }, []);
-}
-
 module.exports = {
   userPermissions: async id => {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate('roles');
+    console.log(user.roles);
 
-    const permissions = user.roles.reduce((acc, cur) => {
-      const p = permissionsFromRole(cur);
-
-      acc.push(...p);
-
-      return acc;
-    }, []);
+    const permissions = user.roles.flatMap(role => role.permissions);
 
     return user.isAdmin ? [...permissions, 'ADMIN'] : permissions;
   },

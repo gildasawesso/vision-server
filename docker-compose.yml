@@ -2,7 +2,7 @@ version: '3'
 
 services:
   agora:
-    image: gawesso/agora:1.0.0
+    image: gawesso/agora
     restart: always
     environment:
       - DB_HOST=mongodb

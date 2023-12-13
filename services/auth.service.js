@@ -17,6 +17,11 @@ async function isUsernameExist(username) {
   return userFetched != null;
 }
 
+async function hashPassword(password) {
+  const salt = await genSalt(10);
+  return await hash(password, salt);
+}
+
 async function registerUser(newUsername, newPassword, firstname, lastname, isAdmin) {
   if (await isUsernameExist(newUsername)) {
     throw new BadRequest('Username existe already');
@@ -107,3 +112,4 @@ module.exports.isAdminEmailExist = isAdminEmailExist;
 module.exports.registerAdmin = registerAdmin;
 module.exports.authenticateAdmin = authenticateAdmin;
 module.exports.renewToken = renewToken;
+module.exports.hashPassword = hashPassword;

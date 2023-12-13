@@ -1,6 +1,6 @@
 const { userPermissions } = require('../services/permissions.service');
 const { usersCount, userInformations, updateUser } = require('../services/users.service');
-const { registerUser } = require('../services/auth.service');
+const { registerUser, isUserEmailExist, hashPassword } = require('../services/auth.service');
 const { decodeToken } = require('../utils/jwt');
 const context = require('../services/db_context');
 
@@ -13,7 +13,7 @@ module.exports = {
 
   all: async (req, res) => {
     const users = await context.users.Model
-      .find({ schools: req.school }, '-password')
+      .find({ schools: req.school }, '-password', { sort: { lastname: 1 } })
       .lean()
       .populate('roles', 'name');
 
@@ -26,10 +26,10 @@ module.exports = {
 
     const payload = await registerUser(data.username, data.password, data.firstname, data.lastname, data.isAdmin);
     const { _id } = decodeToken(payload.accessToken);
-    const user = await userInformations(_id);
 
     delete data.password;
     await updateUser(_id, data);
+    const user = await userInformations(_id);
 
     return res.json(user);
   },
@@ -55,10 +55,24 @@ module.exports = {
   },
 
   update: async (req, res) => {
+    const { username } = req.body;
+    if (await isUserEmailExist(username)) {
+      throw new BadRequest('Username existe already');
+    }
+
+    if (req.body.password) {
+      req.body.password = await hashPassword(req.body.password);
+    }
+
     await context.users.update(req.params.id, req.body);
     const user = await context.users.Model.findById(req.params.id, '-password')
       .lean()
       .populate('roles', 'name');
     res.json(user);
   },
+
+  delete: async (req, res) => {
+    await context.users.delete(req.params.id);
+    res.json({ message: 'User deleted successfully' });
+  }
 };

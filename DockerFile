@@ -8,11 +8,19 @@ RUN npm install
 
 COPY . .
 
-FROM node:14.21.2-alpine
+FROM node:14.21.2-slim
 
 WORKDIR /agora
 
+RUN apt-get update && \
+    apt-get install -y unoconv libreoffice openjdk-11-jdk-headless --no-install-recommends && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 COPY --from=build /agora .
+
+RUN mkdir -p /usr/share/fonts/truetype/
+RUN install -m644 resources/fonts/*.ttf /usr/share/fonts/truetype/
 
 EXPOSE 8080
 

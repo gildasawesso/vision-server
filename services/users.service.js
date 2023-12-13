@@ -7,7 +7,7 @@ module.exports = {
   },
 
   userInformations: async id => {
-    return User.findById(id);
+    return await context.users.one(id).populate('roles', 'name');
   },
 
   userSchool: async id => {

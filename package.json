@@ -4,7 +4,7 @@
   "description": "Server for recordio app",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "dev": "cross-env NODE_ENV=development && fnm use 14 && nodemon index.js",
     "start": "node index.js",
     "lint": "eslint . && prettier --check \"**/*.{json,md,html,yaml}\"",
     "lint:fix": "eslint . --fix && prettier --write \"**/*.{json,md,html,yaml}\"",
